@@ -1,30 +1,33 @@
 # hk-skills
 
-我看了下你的目录：/Users/kanehua/project/hk-skills 里已经有 skills/，/Users/kanehua/project/workarea 里目前还没有 .agents/。所以最自然的落法是把：
-/Users/kanehua/project/hk-skills/skills
-链接到：
-/Users/kanehua/project/workarea/.agents/skills
 
-在 macOS 上常用命令是这几个：
 
-- 创建 symlink
-  - `mkdir -p "/Users/kanehua/project/workarea/.agents"`
-  - `ln -s "/Users/kanehua/project/hk-skills/skills" "/Users/kanehua/project/workarea/.agents/skills"`
-- 查看 symlink
-  - `ls -l "/Users/kanehua/project/workarea/.agents"`
-  - `readlink "/Users/kanehua/project/workarea/.agents/skills"`
-- 删除 symlink 这只会删链接，不会删原始 repo 里的 hk-skills/skills。
-  - `rm "/Users/kanehua/project/workarea/.agents/skills"`
 
-你可以这样理解这套 workflow：
+## 技能管理
+帮我安装skill，仓库地址是 https://github.com/JimLiu/baoyu-skills。这个 skill 原为 claude code 设计，安装前请先理解其核心原理和工作逻辑，再结合你的 Agent 架构与电脑环境进行适配，使其真正融入当前环境，而非生硬移植。
 
-- 维护仍然发生在 hk-skills/skills
-- workarea/.agents/skills 只是一个入口
-- Agent 在 workarea 里读到这个目录时，实际拿到的是 hk-skills 里的真实内容
-- 你发现问题后，直接改 hk-skills 里的文件，就能立刻在当前项目里生效，然后正常 review / commit / PR
+先说一下我的想法：
+我希望用好 Symlink。不要把 Skills 整个拷贝到 .agents/skills，而是通过 Symlink 直接链接到原始 Skills 的 Repo。大部分 Skills 应该跟着项目走（放项目目录下的 .agents/skills），不要放全局（~/.agents/skills）。
 
-创建后建议马上验证一下：`ls -l "/Users/kanehua/project/workarea/.agents/skills"`
-如果输出里有 -> `/Users/kanehua/project/hk-skills/skills`，就说明挂好了。
+先说说你的方案和设计思路，最好有多个让我参考。
+
+好处有两个：
+一是版本控制更干净；
+二是使用中遇到问题，Agent 定位后可以直接在 Repo 里改，改完就能 Review 提 PR。
+我日常维护 skills 就是这么干的，用的时候发现问题，让 Agent 在当前会话改，改的就是 Repo 本身，流程非常顺。
+最后提醒一下：大部分 Skills 应该跟着项目走（放项目目录下的 .agents/skills），不要放全局（~/.agents/skills）。
+即使是渐进式加载，meta 信息累积起来也会占不小的上下文空间。
+
+## 设计
+
+
+## 新增
+
+## 更新
+
+## 查询
+
+## 删除
 
 
 
