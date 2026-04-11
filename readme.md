@@ -1,29 +1,31 @@
 # hk-skills
 
-## autoresearch
-一轮循环如何自动提升你的技能，具体怎么跑
-第一步：下载技能。
+我看了下你的目录：/Users/kanehua/project/hk-skills 里已经有 skills/，/Users/kanehua/project/workarea 里目前还没有 .agents/。所以最自然的落法是把：
+/Users/kanehua/project/hk-skills/skills
+链接到：
+/Users/kanehua/project/workarea/.agents/skills
 
-第二步：选一个要改进的技能。
+在 macOS 上常用命令是这几个：
 
-说一句 "对我的【技能名称】技能跑一遍 autoresearch"。挑那个最让你头疼的 —— 就是那种一半时候输出惊艳、另一半时候输出垃圾的技能。
+- 创建 symlink
+  - `mkdir -p "/Users/kanehua/project/workarea/.agents"`
+  - `ln -s "/Users/kanehua/project/hk-skills/skills" "/Users/kanehua/project/workarea/.agents/skills"`
+- 查看 symlink
+  - `ls -l "/Users/kanehua/project/workarea/.agents"`
+  - `readlink "/Users/kanehua/project/workarea/.agents/skills"`
+- 删除 symlink 这只会删链接，不会删原始 repo 里的 hk-skills/skills。
+  - `rm "/Users/kanehua/project/workarea/.agents/skills"`
 
-第三步：代理会问你三件事。
+你可以这样理解这套 workflow：
 
-优化哪个技能；用什么测试输入（比如 "为一款 AI 效率工具写落地页文案"）；以及你的检查清单问题是什么。
+- 维护仍然发生在 hk-skills/skills
+- workarea/.agents/skills 只是一个入口
+- Agent 在 workarea 里读到这个目录时，实际拿到的是 hk-skills 里的真实内容
+- 你发现问题后，直接改 hk-skills 里的文件，就能立刻在当前项目里生效，然后正常 review / commit / PR
 
-第四步：它运行你的技能，给出起始分数。
+创建后建议马上验证一下：`ls -l "/Users/kanehua/project/workarea/.agents/skills"`
+如果输出里有 -> `/Users/kanehua/project/hk-skills/skills`，就说明挂好了。
 
-这就是基准线。我的落地页技能起步只有 56%—— 标题空洞、套话连篇、行动号召软绵绵，超过一半的检查项都没通过。
 
-第五步：它在浏览器里打开一个实时仪表盘。
 
-分数曲线随时间攀升，每道检查题的通过 / 未通过一目了然，还有一份日志记录它尝试过的每一次改动。每十秒自动刷新。
 
-第六步：该干嘛干嘛去。
-
-Agent 进入循环：分析哪里没通过，对技能提示词做一个小改动，重新测试。分数上去了就保留改动，下来了就撤回。
-
-然后再来一轮。再来一轮。它会自主运行下去，直到你手动停止，或者连续三次突破 95%。
-
-你可以盯着仪表盘看，也可以彻底撒手不管。它不需要你。而且改进后的版本会另存为单独文件，你的原始技能毫发无损。
