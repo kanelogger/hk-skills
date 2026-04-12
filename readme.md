@@ -65,3 +65,15 @@ https://github.com/pbakaus/impeccable
 ## todo
 1. 视频字幕文件转 SEO 文章
 2. prompt-optimizer：一句话目标 + 背景 + 约束 + 期望输出格式
+3. 新增 `/write` 命令：输出在文件上。`/copy`。提示词反思的快捷命令。
+4. webapp_build
+
+
+
+
+
+
+
+
+
+
