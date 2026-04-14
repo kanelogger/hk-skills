@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""List skills from a GitHub repo path."""
+"""List skills from a GitHub repo path with repo-local annotations."""
 
 from __future__ import annotations
 
@@ -28,17 +28,28 @@ class Args(argparse.Namespace):
 
 
 def _request(url: str) -> bytes:
-    return github_request(url, "codex-skill-list")
+    return github_request(url, "skill-installer-list")
 
 
-def _codex_home() -> str:
-    return os.environ.get("CODEX_HOME", os.path.expanduser("~/.codex"))
+def _repo_root() -> str:
+    root = os.path.dirname(
+        os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+    )
+    if not os.path.isdir(os.path.join(root, "custom")) or not os.path.isdir(
+        os.path.join(root, "skills")
+    ):
+        raise ListError("Could not locate the hk-skills repo root from this script path.")
+    return root
 
 
-def _installed_skills() -> set[str]:
-    root = os.path.join(_codex_home(), "skills")
-    if not os.path.isdir(root):
+def _repo_skills(dirname: str) -> set[str]:
+    root = os.path.join(_repo_root(), dirname)
+    if os.path.islink(root):
+        raise ListError(f"Refusing to read symlinked repo directory: {root}")
+    if not os.path.exists(root):
         return set()
+    if not os.path.isdir(root):
+        raise ListError(f"Expected a directory at: {root}")
     entries = set()
     for name in os.listdir(root):
         path = os.path.join(root, name)
@@ -58,7 +69,12 @@ def _list_skills(repo: str, path: str, ref: str) -> list[str]:
                 f"https://github.com/{repo}/tree/{ref}/{path}"
             ) from exc
         raise ListError(f"Failed to fetch skills: HTTP {exc.code}") from exc
-    data = json.loads(payload.decode("utf-8"))
+    except urllib.error.URLError as exc:
+        raise ListError(f"Failed to fetch skills: {exc.reason}") from exc
+    try:
+        data = json.loads(payload.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise ListError("Failed to decode the GitHub skills listing response.") from exc
     if not isinstance(data, list):
         raise ListError("Unexpected skills listing response.")
     skills = [item["name"] for item in data if item.get("type") == "dir"]
@@ -87,18 +103,29 @@ def main(argv: list[str]) -> int:
     args = _parse_args(argv)
     try:
         skills = _list_skills(args.repo, args.path, args.ref)
-        installed = _installed_skills()
+        staged = _repo_skills("remote")
+        installed = _repo_skills("skills")
         if args.format == "json":
             payload = [
-                {"name": name, "installed": name in installed} for name in skills
+                {
+                    "name": name,
+                    "staged": name in staged,
+                    "installed": name in installed,
+                }
+                for name in skills
             ]
             print(json.dumps(payload))
         else:
             for idx, name in enumerate(skills, start=1):
-                suffix = " (already installed)" if name in installed else ""
+                statuses = []
+                if name in staged:
+                    statuses.append("already staged")
+                if name in installed:
+                    statuses.append("already installed")
+                suffix = f" ({', '.join(statuses)})" if statuses else ""
                 print(f"{idx}. {name}{suffix}")
         return 0
-    except ListError as exc:
+    except (ListError, OSError) as exc:
         print(f"Error: {exc}", file=sys.stderr)
         return 1
 

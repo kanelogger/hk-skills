@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Install a skill from a GitHub repo path into $CODEX_HOME/skills."""
+"""Stage a skill from a GitHub repo path into repo-local remote/."""
 
 from __future__ import annotations
 
@@ -7,6 +7,7 @@ import argparse
 from dataclasses import dataclass
 import os
 import shutil
+import stat
 import subprocess
 import sys
 import tempfile
@@ -42,18 +43,42 @@ class InstallError(Exception):
     pass
 
 
-def _codex_home() -> str:
-    return os.environ.get("CODEX_HOME", os.path.expanduser("~/.codex"))
+@dataclass
+class StagePlan:
+    skill_name: str
+    source_path: str
+    skill_src: str
+    temp_dir: str
+    dest_dir: str
+
+
+def _repo_root() -> str:
+    root = os.path.dirname(
+        os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+    )
+    if not os.path.isdir(os.path.join(root, "custom")) or not os.path.isdir(
+        os.path.join(root, "skills")
+    ):
+        raise InstallError("Could not locate the hk-skills repo root from this script path.")
+    return root
 
 
 def _tmp_root() -> str:
-    base = os.path.join(tempfile.gettempdir(), "codex")
+    base = os.path.join(tempfile.gettempdir(), "hk-skills")
     os.makedirs(base, exist_ok=True)
     return base
 
 
 def _request(url: str) -> bytes:
-    return github_request(url, "codex-skill-install")
+    return github_request(url, "skill-installer-stage")
+
+
+def _is_within(path: str, parent: str) -> bool:
+    normalized_path = os.path.realpath(path)
+    normalized_parent = os.path.realpath(parent)
+    return normalized_path == normalized_parent or normalized_path.startswith(
+        normalized_parent + os.sep
+    )
 
 
 def _parse_github_url(url: str, default_ref: str) -> tuple[str, str, str, str | None]:
@@ -84,11 +109,16 @@ def _download_repo_zip(owner: str, repo: str, ref: str, dest_dir: str) -> str:
         payload = _request(zip_url)
     except urllib.error.HTTPError as exc:
         raise InstallError(f"Download failed: HTTP {exc.code}") from exc
+    except urllib.error.URLError as exc:
+        raise InstallError(f"Download failed: {exc.reason}") from exc
     with open(zip_path, "wb") as file_handle:
         file_handle.write(payload)
-    with zipfile.ZipFile(zip_path, "r") as zip_file:
-        _safe_extract_zip(zip_file, dest_dir)
-        top_levels = {name.split("/")[0] for name in zip_file.namelist() if name}
+    try:
+        with zipfile.ZipFile(zip_path, "r") as zip_file:
+            _safe_extract_zip(zip_file, dest_dir)
+            top_levels = {name.split("/")[0] for name in zip_file.namelist() if name}
+    except zipfile.BadZipFile as exc:
+        raise InstallError("Downloaded archive is not a valid zip file.") from exc
     if not top_levels:
         raise InstallError("Downloaded archive was empty.")
     if len(top_levels) != 1:
@@ -97,7 +127,14 @@ def _download_repo_zip(owner: str, repo: str, ref: str, dest_dir: str) -> str:
 
 
 def _run_git(args: list[str]) -> None:
-    result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    try:
+        result = subprocess.run(
+            args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+        )
+    except FileNotFoundError as exc:
+        raise InstallError("git is not installed or not available on PATH.") from exc
+    except OSError as exc:
+        raise InstallError(f"Failed to run git: {exc}") from exc
     if result.returncode != 0:
         raise InstallError(result.stderr.strip() or "Git command failed.")
 
@@ -169,6 +206,21 @@ def _validate_skill(path: str) -> None:
         raise InstallError("SKILL.md not found in selected skill directory.")
 
 
+def _reject_symlink_tree(root: str) -> None:
+    root_stat = os.lstat(root)
+    if stat.S_ISLNK(root_stat.st_mode):
+        raise InstallError(f"Symlinks are not allowed in staged skills: {root}")
+    for current_root, dirnames, filenames in os.walk(root):
+        for name in [*dirnames, *filenames]:
+            current_path = os.path.join(current_root, name)
+            current_stat = os.lstat(current_path)
+            if stat.S_ISLNK(current_stat.st_mode):
+                raise InstallError(
+                    "Symlinks are not allowed in staged skills: "
+                    f"{os.path.relpath(current_path, root)}"
+                )
+
+
 def _copy_skill(src: str, dest_dir: str) -> None:
     os.makedirs(os.path.dirname(dest_dir), exist_ok=True)
     if os.path.exists(dest_dir):
@@ -182,6 +234,90 @@ def _build_repo_url(owner: str, repo: str) -> str:
 
 def _build_repo_ssh(owner: str, repo: str) -> str:
     return f"git@github.com:{owner}/{repo}.git"
+
+
+def _default_remote_dir() -> str:
+    remote_dir = os.path.join(_repo_root(), "remote")
+    if os.path.lexists(remote_dir) and os.path.islink(remote_dir):
+        raise InstallError(f"Refusing to use symlinked remote directory: {remote_dir}")
+    return remote_dir
+
+
+def _skills_dir() -> str:
+    skills_dir = os.path.join(_repo_root(), "skills")
+    if os.path.lexists(skills_dir) and os.path.islink(skills_dir):
+        raise InstallError(f"Refusing to use symlinked skills directory: {skills_dir}")
+    return skills_dir
+
+
+def _validate_dest_root(dest_root: str) -> str:
+    repo_root = _repo_root()
+    temp_root = tempfile.gettempdir()
+    real_dest = os.path.realpath(dest_root)
+    if os.path.lexists(dest_root) and os.path.islink(dest_root):
+        raise InstallError(f"Refusing to use symlinked destination directory: {dest_root}")
+    if not _is_within(real_dest, repo_root) and not _is_within(real_dest, temp_root):
+        raise InstallError(
+            "Destination must stay inside the hk-skills repo or the system temp directory."
+        )
+    return real_dest
+
+
+def _is_repo_remote_dest(dest_root: str) -> bool:
+    return os.path.realpath(dest_root) == os.path.realpath(_default_remote_dir())
+
+
+def _menu_path() -> str:
+    return os.path.join(_default_remote_dir(), "menu.md")
+
+
+def _load_menu_rows() -> dict[str, list[str]]:
+    path = _menu_path()
+    if not os.path.exists(path):
+        return {}
+    rows: dict[str, list[str]] = {}
+    with open(path, "r", encoding="utf-8") as file_handle:
+        for line in file_handle:
+            stripped = line.strip()
+            if not stripped.startswith("|"):
+                continue
+            if stripped.startswith("| Skill ") or stripped.startswith("| ---"):
+                continue
+            cells = [cell.strip() for cell in stripped.strip("|").split("|")]
+            if len(cells) != 6:
+                continue
+            rows[cells[0]] = cells
+    return rows
+
+
+def _write_menu_rows(rows: dict[str, list[str]]) -> None:
+    path = _menu_path()
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as file_handle:
+        file_handle.write("# Remote Skill Sources\n\n")
+        file_handle.write(
+            "This file records third-party skills staged into `remote/` and their upstream provenance.\n\n"
+        )
+        file_handle.write(
+            "| Skill | Repo | Ref | Upstream Path | Staged Path | URL |\n"
+        )
+        file_handle.write("| --- | --- | --- | --- | --- | --- |\n")
+        for skill_name in sorted(rows, key=str.lower):
+            file_handle.write(f"| {' | '.join(rows[skill_name])} |\n")
+
+
+def _record_staged_sources(source: Source, plans: list[StagePlan]) -> None:
+    rows = _load_menu_rows()
+    for plan in plans:
+        rows[plan.skill_name] = [
+            plan.skill_name,
+            f"{source.owner}/{source.repo}",
+            source.ref,
+            plan.source_path,
+            os.path.relpath(plan.dest_dir, _repo_root()),
+            f"https://github.com/{source.owner}/{source.repo}/tree/{source.ref}/{plan.source_path}",
+        ]
+    _write_menu_rows(rows)
 
 
 def _prepare_repo(source: Source, method: str, tmp_dir: str) -> str:
@@ -241,11 +377,11 @@ def _resolve_source(args: Args) -> Source:
 
 
 def _default_dest() -> str:
-    return os.path.join(_codex_home(), "skills")
+    return _default_remote_dir()
 
 
 def _parse_args(argv: list[str]) -> Args:
-    parser = argparse.ArgumentParser(description="Install a skill from GitHub.")
+    parser = argparse.ArgumentParser(description="Stage a skill from GitHub.")
     parser.add_argument("--repo", help="owner/repo")
     parser.add_argument("--url", help="https://github.com/owner/repo[/tree/ref/path]")
     parser.add_argument(
@@ -254,7 +390,7 @@ def _parse_args(argv: list[str]) -> Args:
         help="Path(s) to skill(s) inside repo",
     )
     parser.add_argument("--ref", default=DEFAULT_REF)
-    parser.add_argument("--dest", help="Destination skills directory")
+    parser.add_argument("--dest", help="Destination staging directory")
     parser.add_argument(
         "--name", help="Destination skill name (defaults to basename of path)"
     )
@@ -276,30 +412,70 @@ def main(argv: list[str]) -> int:
         for path in source.paths:
             _validate_relative_path(path)
         dest_root = args.dest or _default_dest()
+        _validate_dest_root(dest_root)
+        os.makedirs(dest_root, exist_ok=True)
         tmp_dir = tempfile.mkdtemp(prefix="skill-install-", dir=_tmp_root())
         try:
             repo_root = _prepare_repo(source, args.method, tmp_dir)
-            installed = []
+            staging_root = tempfile.mkdtemp(prefix="skill-batch-", dir=_tmp_root())
+            plans: list[StagePlan] = []
+            seen_names: set[str] = set()
             for path in source.paths:
                 skill_name = args.name if len(source.paths) == 1 else None
                 skill_name = skill_name or os.path.basename(path.rstrip("/"))
                 _validate_skill_name(skill_name)
                 if not skill_name:
                     raise InstallError("Unable to derive skill name.")
+                if skill_name in seen_names:
+                    raise InstallError(f"Duplicate skill name in this batch: {skill_name}")
+                seen_names.add(skill_name)
                 dest_dir = os.path.join(dest_root, skill_name)
                 if os.path.exists(dest_dir):
                     raise InstallError(f"Destination already exists: {dest_dir}")
                 skill_src = os.path.join(repo_root, path)
                 _validate_skill(skill_src)
-                _copy_skill(skill_src, dest_dir)
-                installed.append((skill_name, dest_dir))
+                _reject_symlink_tree(skill_src)
+                if _is_repo_remote_dest(dest_root):
+                    installed_dir = os.path.join(_skills_dir(), skill_name)
+                    if os.path.exists(installed_dir):
+                        raise InstallError(
+                            "Skill already exists in skills/: "
+                            f"{os.path.relpath(installed_dir, _repo_root())}"
+                        )
+                temp_skill_dir = os.path.join(staging_root, skill_name)
+                plans.append(
+                    StagePlan(
+                        skill_name=skill_name,
+                        source_path=path,
+                        skill_src=skill_src,
+                        temp_dir=temp_skill_dir,
+                        dest_dir=dest_dir,
+                    )
+                )
+            for plan in plans:
+                _copy_skill(plan.skill_src, plan.temp_dir)
+            staged_dirs: list[str] = []
+            try:
+                for plan in plans:
+                    shutil.move(plan.temp_dir, plan.dest_dir)
+                    staged_dirs.append(plan.dest_dir)
+            except OSError as exc:
+                for staged_dir in reversed(staged_dirs):
+                    shutil.rmtree(staged_dir, ignore_errors=True)
+                raise InstallError(f"Failed to finalize staged skills: {exc}") from exc
+            if _is_repo_remote_dest(dest_root):
+                _record_staged_sources(source, plans)
         finally:
             if os.path.isdir(tmp_dir):
                 shutil.rmtree(tmp_dir, ignore_errors=True)
-        for skill_name, dest_dir in installed:
-            print(f"Installed {skill_name} to {dest_dir}")
+            if "staging_root" in locals() and os.path.isdir(staging_root):
+                shutil.rmtree(staging_root, ignore_errors=True)
+        for plan in plans:
+            print(f"Staged {plan.skill_name} to {plan.dest_dir}")
+        if _is_repo_remote_dest(dest_root):
+            print(f"Recorded source metadata in {_menu_path()}")
         return 0
-    except InstallError as exc:
+    except (InstallError, OSError) as exc:
         print(f"Error: {exc}", file=sys.stderr)
         return 1
 
