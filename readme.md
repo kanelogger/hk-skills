@@ -10,8 +10,7 @@
 
 这会：
 - 创建 `registry/`、`manifests/`、`warehouse/`、`runtime/` 等运行时目录
-- 自动扫描并迁移现有的 `custom/` 和 `skills/` 中的技能
-- **只复制，不删除**原始文件
+- 自动扫描并注册 `warehouse/local/` 中的本地技能
 
 ### 2. 查看已安装的技能
 
@@ -25,8 +24,8 @@
 NAME              SOURCE   STAGE    ENABLED
 ----------------------------------------------------
 prompt-optimizer  local    adapted  no
-frontend-skill    adapted  adapted  no
-vetter            adapted  adapted  no
+frontend-skill    local    adapted  no
+vetter            local    adapted  no
 ...
 ```
 
@@ -38,7 +37,7 @@ vetter            adapted  adapted  no
 ./bin/hk-skill enable vetter --global
 ```
 
-这会在 `runtime/global/vetter` 创建一条**软链接**，指向 `warehouse/adapted/vetter`。
+这会在 `runtime/global/vetter` 创建一条**软链接**，指向 `warehouse/local/vetter`。
 
 **全局禁用**：
 
@@ -101,15 +100,14 @@ vetter            adapted  adapted  no
 
 以下功能在 Phase 1 中尚未实现，按优先级排列，计划后续迭代逐步补齐：
 
-### P0 - 基础生命周期
-- ~~**Update Command**：支持一键更新已安装的远程 skill。~~ ✅ 已完成
-
 ### P1 - 安全与开发者体验
-- **Advanced Vetter**：增强安全检查（如敏感信息、环境变量泄露检测）。
-- **Doctor**：诊断命令，检查环境、依赖与配置健康度。
+- **Advanced Vetter**：增强安全检查（如敏感信息、环境变量泄露检测）。通过skill去实现。 `warehouse/local/vetter`
 
 ### P2 - 适配与本地化
-- **Adapter Prompt Rewriting**：根据当前 Agent 架构与操作系统自动重写 skill prompt。
+- **Adapter Prompt Rewriting**：根据当前 Agent 架构与操作系统自动重写 skill prompt。写成一个本地skill通过skill去实现。
+```
+帮我安装 skill，仓库地址是 {} 。这个 skill 原为 {Claude Code} 设计，安装前请先理解其核心原理和工作逻辑，再结合你的 Agent 架构与电脑环境进行适配，使其真正融入当前环境，而非生硬移植。
+```
 - **Chinese Localization Generation**：为全英文 skill 自动生成中文介绍文档。
 
 ### P3 - 生态与高级功能
