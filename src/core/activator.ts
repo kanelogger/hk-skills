@@ -6,7 +6,7 @@ import {
 } from "../services/registry.js";
 import { getWarehousePath, getRuntimePath } from "../utils/paths.js";
 
-function resolveSourcePath(root: string, name: string): string {
+export function resolveSourcePath(root: string, name: string): string {
   const adaptedPath = path.join(getWarehousePath(root, "adapted"), name);
   if (fs.existsSync(adaptedPath)) {
     return adaptedPath;
