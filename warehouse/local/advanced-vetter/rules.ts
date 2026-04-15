@@ -28,7 +28,7 @@ export const rules: Rule[] = [
   {
     id: "eval-usage",
     description: "Detects eval() usage",
-    pattern: /\beval\s*\(/i,
+    pattern: /\beval\s*\(\s*[^.\)\s]/i,
     severity: "error",
   },
   {

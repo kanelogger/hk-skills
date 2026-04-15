@@ -20,15 +20,15 @@ Advanced security vetting protocol that operates programmatically on skill code.
 ### Execution Hazards
 Detects patterns that execute arbitrary code or shell commands:
 - `curl | bash` / `wget | bash` pipelines
-- `eval()` and `new Function()` usage
+- `eval(...)` and `new Function(...)` usage
 - `rm -rf /` and similar destructive commands
 - `child_process` imports in Node.js
 
 ### Credential & Privacy Access
 Flags attempts to read sensitive directories and files:
-- `~/.ssh` — SSH keys and known hosts
-- `~/.aws` — AWS credentials and config
-- `~/.config` — Application secrets and tokens
+- `.ssh directory` — SSH keys and known hosts
+- `.aws directory` — AWS credentials and config
+- `.config directory` — Application secrets and tokens
 
 ### Obfuscation & Encoding
 Catches base64 decoding patterns commonly used to hide malicious code:

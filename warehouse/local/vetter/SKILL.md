@@ -38,10 +38,10 @@ Read ALL files in the skill. Check for these **RED FLAGS**:
 • curl/wget to unknown URLs
 • Sends data to external servers
 • Requests credentials/tokens/API keys
-• Reads ~/.ssh, ~/.aws, ~/.config without clear reason
+• Reads .ssh, .aws, or .config directories without clear reason
 • Accesses MEMORY.md, USER.md, SOUL.md, IDENTITY.md
 • Uses base64 decode on anything
-• Uses eval() or exec() with external input
+• Uses eval(...) or exec(...) with external input
 • Modifies system files outside workspace
 • Installs packages without listing them
 • Network calls to IPs instead of domains
