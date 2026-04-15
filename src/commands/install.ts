@@ -3,6 +3,7 @@ import fs from "node:fs";
 import { fetchRemote, fetchLocal } from "../core/fetcher.js";
 import { vet } from "../core/vetter.js";
 import { adapt } from "../core/adapter.js";
+import { discoverSkills } from "../core/discover-skills.js";
 import {
   loadSkillsRegistry,
   saveSkillsRegistry,
@@ -10,7 +11,8 @@ import {
   saveSourcesRegistry,
 } from "../services/registry.js";
 import { getWarehousePath } from "../utils/paths.js";
-import { success, error, warn } from "../utils/logger.js";
+import { success, error, warn, info } from "../utils/logger.js";
+import { promptSelectSkill } from "../utils/select-skill.js";
 
 export async function install(root: string, source: string, options?: { local?: boolean; subpath?: string }): Promise<void> {
   const isRemote = !options?.local && /^https?:\/\//i.test(source);
@@ -44,7 +46,58 @@ export async function install(root: string, source: string, options?: { local?: 
     process.exit(1);
   }
 
-  const adaptPath = options?.subpath ? path.join(fetchedPath, options.subpath) : fetchedPath;
+  let effectiveSubpath: string | undefined;
+
+  if (isRemote && options?.subpath === undefined) {
+    const candidates = discoverSkills(fetchedPath);
+
+    if (candidates.length === 0) {
+      error("No SKILL.md found in repository");
+      try {
+        fs.rmSync(fetchedPath, { recursive: true, force: true });
+      } catch {
+        warn(`Failed to clean up ${fetchedPath}`);
+      }
+      process.exit(1);
+    } else if (candidates.length === 1) {
+      const candidate = candidates[0]!;
+      info(`Discovered 1 skill: ${candidate.name}${candidate.subpath ? ` at ${candidate.subpath}` : ""}`);
+      effectiveSubpath = candidate.subpath;
+    } else {
+      if (!process.stdin.isTTY) {
+        const lines = [
+          "Multiple skills found in repository. Use --subpath to specify which one to install.",
+          ...candidates.map((c) => `  ${c.name} (${c.subpath || "root"})`),
+          `Rerun with: hk-skill install ${source} --subpath <subpath>`,
+        ];
+        error(lines.join("\n"));
+        try {
+          fs.rmSync(fetchedPath, { recursive: true, force: true });
+        } catch {
+          warn(`Failed to clean up ${fetchedPath}`);
+        }
+        process.exit(1);
+      } else {
+        const selectedSubpath = await promptSelectSkill(
+          "Multiple skills found in repository. Select one to install:",
+          candidates
+        );
+        if (selectedSubpath === null) {
+          try {
+            fs.rmSync(fetchedPath, { recursive: true, force: true });
+          } catch {
+            warn(`Failed to clean up ${fetchedPath}`);
+          }
+          process.exit(1);
+        }
+        effectiveSubpath = selectedSubpath;
+      }
+    }
+  } else {
+    effectiveSubpath = options?.subpath;
+  }
+
+  const adaptPath = effectiveSubpath !== undefined ? path.join(fetchedPath, effectiveSubpath) : fetchedPath;
 
   const vetResult = vet(adaptPath);
   if (!vetResult.passed) {
@@ -85,7 +138,7 @@ export async function install(root: string, source: string, options?: { local?: 
     enabled_projects: [],
     updated_at: new Date().toISOString(),
     source_id: sourceId,
-    ...(options?.subpath !== undefined && { subpath: options.subpath }),
+    ...(effectiveSubpath !== undefined && { subpath: effectiveSubpath }),
   };
 
   saveSkillsRegistry(root, registry);
