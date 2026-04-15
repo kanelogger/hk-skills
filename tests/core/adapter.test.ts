@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from "bun:test";
-import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, existsSync, rmSync } from "node:fs";
+import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, existsSync, rmSync, renameSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { resolve } from "node:path";
 import { parse } from "yaml";
@@ -113,5 +113,110 @@ describe("adapt", () => {
     expect(manifest.name).toBe("my-skill");
     expect(manifest.display_name).toBe("my-skill");
     expect(manifest.source).toEqual({ type: "local" });
+  });
+
+  it("rewrites SKILL.md content for the current agent when HK_AGENT is set", () => {
+    const originalAgent = process.env.HK_AGENT;
+    process.env.HK_AGENT = "opencode";
+
+    writeFileSync(
+      resolve(skillDir, "SKILL.md"),
+      `---\nname: test-skill\ndisplay_name: Test Skill\n---\n\nThis skill is designed for Claude Code.\n`,
+      "utf-8"
+    );
+
+    try {
+      const result: AdaptResult = adapt(skillDir, tempRoot, "local");
+
+      expect(result.success).toBe(true);
+
+      const adaptedSkillPath = resolve(tempRoot, "warehouse", "adapted", "test-skill", "SKILL.md");
+      const adaptedContent = readFileSync(adaptedSkillPath, "utf-8");
+
+      expect(adaptedContent).toContain("opencode");
+      expect(adaptedContent).not.toContain("Claude Code");
+    } finally {
+      if (originalAgent === undefined) {
+        delete process.env.HK_AGENT;
+      } else {
+        process.env.HK_AGENT = originalAgent;
+      }
+    }
+  });
+
+  it("manifest YAML contains adapter target and adapted_from fields when rewriting occurs", () => {
+    const originalAgent = process.env.HK_AGENT;
+    process.env.HK_AGENT = "opencode";
+
+    writeFileSync(
+      resolve(skillDir, "SKILL.md"),
+      `---\nname: test-skill\ndisplay_name: Test Skill\n---\n\nThis skill is designed for Claude Code.\n`,
+      "utf-8"
+    );
+
+    try {
+      const result: AdaptResult = adapt(skillDir, tempRoot, "local");
+
+      expect(result.success).toBe(true);
+
+      const manifestPath = resolve(tempRoot, "manifests", "test-skill.yaml");
+      const manifestContent = readFileSync(manifestPath, "utf-8");
+      const manifest = parse(manifestContent) as Record<string, unknown>;
+
+      expect(manifest.adapter).toEqual({
+        target: "opencode",
+        adapted_from: "claude-code",
+      });
+    } finally {
+      if (originalAgent === undefined) {
+        delete process.env.HK_AGENT;
+      } else {
+        process.env.HK_AGENT = originalAgent;
+      }
+    }
+  });
+
+  it("falls back to copy-only when the adapter engine is missing", () => {
+    const enginePath = resolve(process.cwd(), "warehouse/local/adapter/engine.ts");
+    const backupPath = `${enginePath}.bak`;
+
+    if (!existsSync(enginePath)) {
+      return;
+    }
+
+    renameSync(enginePath, backupPath);
+
+    try {
+      const result: AdaptResult = adapt(skillDir, tempRoot, "local");
+
+      expect(result.success).toBe(true);
+
+      const adaptedSkillPath = resolve(tempRoot, "warehouse", "adapted", "test-skill", "SKILL.md");
+      const adaptedContent = readFileSync(adaptedSkillPath, "utf-8");
+
+      expect(adaptedContent).toBe(
+        `---\nname: test-skill\ndisplay_name: Test Skill\n---\n\n# Test Skill\n`
+      );
+    } finally {
+      renameSync(backupPath, enginePath);
+    }
+  });
+
+  it("skips rewriting when the skill name is adapter (self-adaptation guard)", () => {
+    writeFileSync(
+      resolve(skillDir, "SKILL.md"),
+      `---\nname: adapter\ndisplay_name: Adapter\n---\n\nThis skill is designed for Claude Code.\n`,
+      "utf-8"
+    );
+
+    const result: AdaptResult = adapt(skillDir, tempRoot, "local");
+
+    expect(result.success).toBe(true);
+
+    const adaptedSkillPath = resolve(tempRoot, "warehouse", "adapted", "adapter", "SKILL.md");
+    const adaptedContent = readFileSync(adaptedSkillPath, "utf-8");
+
+    expect(adaptedContent).toContain("Claude Code");
+    expect(adaptedContent).not.toContain("opencode");
   });
 });

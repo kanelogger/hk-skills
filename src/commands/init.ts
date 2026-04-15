@@ -186,6 +186,48 @@ export function init(root: string): void {
     }
   }
 
+  const localWarehouseDir = path.join(root, "warehouse", "local");
+  if (fs.existsSync(localWarehouseDir) && fs.statSync(localWarehouseDir).isDirectory()) {
+    for (const entry of fs.readdirSync(localWarehouseDir)) {
+      const skillPath = path.join(localWarehouseDir, entry);
+      const stat = fs.statSync(skillPath);
+      if (!stat.isDirectory()) continue;
+
+      const skillMdPath = path.join(skillPath, "SKILL.md");
+      if (!fs.existsSync(skillMdPath)) {
+        warn(`Skipping ${entry}: no SKILL.md found`);
+        continue;
+      }
+
+      const vetResult = vet(skillPath);
+      if (!vetResult.passed) {
+        error(`Vet failed for ${entry}: ${vetResult.errors.join(", ")}`);
+        continue;
+      }
+
+      const adaptResult = adapt(skillPath, root, "local");
+      if (!adaptResult.success) {
+        error(`Adapt failed for ${entry}: ${adaptResult.errors.join(", ")}`);
+        continue;
+      }
+
+      const name = adaptResult.name;
+      if (skillsRegistry[name]) {
+        warn(`Skill ${name} already in registry, skipping`);
+        continue;
+      }
+
+      skillsRegistry[name] = {
+        manifest: `manifests/${name}.yaml`,
+        installed: true,
+        enabled_global: false,
+        enabled_projects: [],
+        updated_at: new Date().toISOString(),
+      };
+      success(`Registered local skill: ${name}`);
+    }
+  }
+
   saveSkillsRegistry(root, skillsRegistry);
 
   const menuPath = path.join(root, "remote", "menu.md");

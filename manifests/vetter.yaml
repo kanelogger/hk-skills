@@ -2,8 +2,10 @@ name: vetter
 display_name: vetter
 source:
   type: local
-  path: warehouse/local/vetter
 status:
   stage: adapted
 entry:
   file: SKILL.md
+adapter:
+  target: opencode
+  adapted_from: null

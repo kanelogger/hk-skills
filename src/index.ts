@@ -8,6 +8,7 @@ import { disable } from "./commands/disable.js";
 import { remove } from "./commands/remove.js";
 import { update } from "./commands/update.js";
 import { vet } from "./commands/vet.js";
+import { adaptCommand } from "./commands/adapt.js";
 import { getRootPath } from "./utils/paths.js";
 
 const program = new Command();
@@ -79,6 +80,13 @@ program
   .option("--all", "Update all remote skills")
   .action(async (name: string | undefined, options: { all?: boolean }) => {
     await update(getRootPath(), name, options);
+  });
+
+program
+  .command("adapt <name>")
+  .description("Re-adapt a skill to the current environment")
+  .action(async (name: string) => {
+    await adaptCommand(getRootPath(), name);
   });
 
 program.parse();

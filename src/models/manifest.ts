@@ -32,7 +32,7 @@ export const SkillManifestSchema = z.object({
   adapter: z
     .object({
       target: z.string().optional(),
-      adapted_from: z.string().optional(),
+      adapted_from: z.string().nullable().optional(),
     })
     .optional(),
   localization: z.record(z.string(), z.any()).optional(),

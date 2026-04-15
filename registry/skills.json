@@ -26,5 +26,12 @@
     "enabled_global": false,
     "enabled_projects": [],
     "updated_at": "2026-04-15T04:05:41.277Z"
+  },
+  "adapter": {
+    "manifest": "manifests/adapter.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-15T06:37:02.393Z"
   }
 }

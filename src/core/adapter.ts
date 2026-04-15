@@ -1,8 +1,14 @@
-import { readFileSync, writeFileSync, mkdirSync, cpSync } from "node:fs";
-import { resolve, basename } from "node:path";
+import { readFileSync, writeFileSync, mkdirSync, cpSync, existsSync } from "node:fs";
+import { resolve, basename, dirname } from "node:path";
+import { fileURLToPath } from "url";
+import { createRequire } from "module";
 import { stringify } from "yaml";
 import { parseSkillMd } from "../utils/parse-skill-md.js";
 import { getManifestPath, getWarehousePath } from "../utils/paths.js";
+import { detectAgent, detectOs } from "../utils/env.js";
+import { warn } from "../utils/logger.js";
+
+const require = createRequire(import.meta.url);
 
 export interface AdaptResult {
   success: boolean;
@@ -62,6 +68,30 @@ export function adapt(
     }
   }
 
+  let rewrittenContent: string | undefined;
+  let derivedAgent: string | undefined;
+  let detectedAgent: string | undefined;
+
+  if (name !== "adapter") {
+    const __dirname = dirname(fileURLToPath(import.meta.url));
+    const enginePath = resolve(__dirname, "../../warehouse/local/adapter/engine.ts");
+    if (existsSync(enginePath)) {
+      try {
+        const mod = require(enginePath);
+        detectedAgent = detectAgent();
+        const os = detectOs();
+        derivedAgent = mod.deriveAgent(content);
+        rewrittenContent = mod.rewriteSkillMd(content, { agent: detectedAgent, os, sourceType });
+      } catch (e) {
+        warn(
+          `Adapter engine unavailable, falling back to copy-only: ${e instanceof Error ? e.message : String(e)}`
+        );
+      }
+    } else {
+      warn(`Adapter engine not found at ${enginePath}, falling back to copy-only`);
+    }
+  }
+
   const manifest: Record<string, unknown> = {
     name,
     display_name: displayName,
@@ -73,6 +103,13 @@ export function adapt(
       file: "SKILL.md",
     },
   };
+
+  if (rewrittenContent !== undefined && detectedAgent !== undefined) {
+    manifest.adapter = {
+      target: detectedAgent,
+      adapted_from: derivedAgent ?? null,
+    };
+  }
 
   const manifestPath = getManifestPath(root, name);
   try {
@@ -89,6 +126,9 @@ export function adapt(
   try {
     mkdirSync(resolve(destPath, ".."), { recursive: true });
     cpSync(inputPath, destPath, { recursive: true });
+    if (rewrittenContent !== undefined) {
+      writeFileSync(resolve(destPath, "SKILL.md"), rewrittenContent, "utf-8");
+    }
   } catch (err) {
     errors.push(
       `Failed to copy skill directory: ${err instanceof Error ? err.message : String(err)}`
