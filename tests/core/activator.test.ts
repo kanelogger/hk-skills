@@ -36,8 +36,8 @@ describe("activator", () => {
       recursive: true,
     });
     fs.writeFileSync(
-      path.join(tempDir, "warehouse", "local", "test-skill", "README.md"),
-      "# Test Skill",
+      path.join(tempDir, "warehouse", "local", "test-skill", "SKILL.md"),
+      "---\nname: test-skill\n---\n# Test Skill",
       "utf-8"
     );
     saveSkillsRegistry(tempDir, {
@@ -118,8 +118,8 @@ describe("activator", () => {
         recursive: true,
       });
       fs.writeFileSync(
-        path.join(tempDir, "warehouse", "adapted", "test-skill", "adapted.md"),
-        "adapted",
+        path.join(tempDir, "warehouse", "adapted", "test-skill", "SKILL.md"),
+        "---\nname: test-skill\n---\n# Adapted Test Skill",
         "utf-8"
       );
 

@@ -8,11 +8,11 @@ import { getWarehousePath, getRuntimePath } from "../utils/paths.js";
 
 export function resolveSourcePath(root: string, name: string): string {
   const adaptedPath = path.join(getWarehousePath(root, "adapted"), name);
-  if (fs.existsSync(adaptedPath)) {
+  if (fs.existsSync(path.join(adaptedPath, "SKILL.md"))) {
     return adaptedPath;
   }
   const localPath = path.join(getWarehousePath(root, "local"), name);
-  if (fs.existsSync(localPath)) {
+  if (fs.existsSync(path.join(localPath, "SKILL.md"))) {
     return localPath;
   }
   throw new Error(

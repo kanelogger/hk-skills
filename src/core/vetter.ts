@@ -210,7 +210,10 @@ export function vet(skillPath: string): VetResult {
       rules = mod.rules || [];
       stopwords = mod.stopwords || [];
     }
-  } catch {
+  } catch (e) {
+    warnings.push(
+      `Failed to load advanced vetter rules: ${e instanceof Error ? e.message : String(e)}`
+    );
   }
 
   const resolvedSkillPath = path.resolve(skillPath);

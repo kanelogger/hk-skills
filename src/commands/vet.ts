@@ -8,17 +8,13 @@ export function vet(root: string, name: string): void {
   let skillPath: string | undefined;
 
   const adaptedPath = path.join(getWarehousePath(root, "adapted"), name);
-  if (fs.existsSync(adaptedPath)) {
-    skillPath = adaptedPath;
-  } else {
-    const localPath = path.join(getWarehousePath(root, "local"), name);
-    if (fs.existsSync(localPath)) {
-      skillPath = localPath;
-    } else {
-      const remotePath = path.join(getWarehousePath(root, "remote"), name);
-      if (fs.existsSync(remotePath)) {
-        skillPath = remotePath;
-      }
+  const localPath = path.join(getWarehousePath(root, "local"), name);
+  const remotePath = path.join(getWarehousePath(root, "remote"), name);
+
+  for (const p of [adaptedPath, localPath, remotePath]) {
+    if (fs.existsSync(path.join(p, "SKILL.md"))) {
+      skillPath = p;
+      break;
     }
   }
 
