@@ -3,7 +3,11 @@ import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
 import { install } from "../../src/commands/install.js";
-import { loadSkillsRegistry, saveSkillsRegistry } from "../../src/services/registry.js";
+import {
+  loadSkillsRegistry,
+  saveSkillsRegistry,
+  loadSourcesRegistry,
+} from "../../src/services/registry.js";
 import * as fetcher from "../../src/core/fetcher.js";
 import * as vetter from "../../src/core/vetter.js";
 import { getWarehousePath } from "../../src/utils/paths.js";
@@ -37,7 +41,7 @@ describe("install", () => {
         `---\nname: ${name}\n---\n\n# ${name}\n`,
         "utf-8"
       );
-      return name;
+      return { name, repoUrl, ref: "main", commit: "abc123" };
     });
     fetchLocalSpy = spyOn(fetcher, "fetchLocal").mockImplementation(async (root, localPath) => {
       const name = path.basename(localPath);
@@ -76,6 +80,15 @@ describe("install", () => {
     expect(registry["test-remote-skill"]).toBeDefined();
     expect(registry["test-remote-skill"]!.installed).toBe(true);
     expect(registry["test-remote-skill"]!.manifest).toBe("manifests/test-remote-skill.yaml");
+
+    const sources = loadSourcesRegistry(tempDir);
+    expect(sources["test-remote-skill"]).toEqual([
+      { repo: "https://github.com/example/test-remote-skill.git", ref: "main" },
+    ]);
+
+    const manifestPath = path.join(tempDir, "manifests", "test-remote-skill.yaml");
+    const manifestContent = fs.readFileSync(manifestPath, "utf-8");
+    expect(manifestContent).toContain("commit: abc123");
   });
 
   it("installs from local path and registers skill", async () => {

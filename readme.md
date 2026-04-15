@@ -93,7 +93,7 @@ vetter            adapted  adapted  no
 
 - `.gitignore` 已配置：`registry/`、`manifests/`、`warehouse/`、`runtime/` 等运行时生成的目录**不会被提交到 Git**。这样每台机器可以独立维护自己的启用状态。
 - `init` 命令是**幂等**的，重复执行不会重复注册已有的技能。
-- 当前为 **Phase 1**，核心聚焦在技能的安装、列出、启用/禁用和迁移。更新、卸载、高级适配等功能尚未实现。
+- 当前为 **Phase 1**，核心聚焦在技能的安装、列出、启用/禁用、迁移和更新。高级适配等功能尚未实现。
 
 ---
 
@@ -102,8 +102,7 @@ vetter            adapted  adapted  no
 以下功能在 Phase 1 中尚未实现，按优先级排列，计划后续迭代逐步补齐：
 
 ### P0 - 基础生命周期
-- **Remove / Prune Commands**：卸载 skill 与清理无用依赖（先禁用关联，再删除文件）。
-- **Update Command**：支持一键更新已安装的远程 skill。
+- ~~**Update Command**：支持一键更新已安装的远程 skill。~~ ✅ 已完成
 
 ### P1 - 安全与开发者体验
 - **Advanced Vetter**：增强安全检查（如敏感信息、环境变量泄露检测）。

@@ -56,6 +56,44 @@ describe("adapt", () => {
     expect(manifest.entry).toEqual({ file: "SKILL.md" });
   });
 
+  it("manifest YAML includes repo, ref, and commit when provided for remote source", () => {
+    const result: AdaptResult = adapt(skillDir, tempRoot, "remote", "https://github.com/user/repo", "main", "abc123");
+
+    expect(result.success).toBe(true);
+
+    const manifestPath = resolve(tempRoot, "manifests", "test-skill.yaml");
+    const manifestContent = readFileSync(manifestPath, "utf-8");
+    const manifest = parse(manifestContent) as Record<string, unknown>;
+
+    expect(manifest.source).toEqual({
+      type: "remote",
+      repo: "https://github.com/user/repo",
+      ref: "main",
+      commit: "abc123",
+    });
+  });
+
+  it("falls back to frontmatter repo when repo param is omitted", () => {
+    writeFileSync(
+      resolve(skillDir, "SKILL.md"),
+      `---\nname: test-skill\ndisplay_name: Test Skill\nrepo: https://github.com/fallback/repo\n---\n\n# Test Skill\n`,
+      "utf-8"
+    );
+
+    const result: AdaptResult = adapt(skillDir, tempRoot, "remote");
+
+    expect(result.success).toBe(true);
+
+    const manifestPath = resolve(tempRoot, "manifests", "test-skill.yaml");
+    const manifestContent = readFileSync(manifestPath, "utf-8");
+    const manifest = parse(manifestContent) as Record<string, unknown>;
+
+    expect(manifest.source).toEqual({
+      type: "remote",
+      repo: "https://github.com/fallback/repo",
+    });
+  });
+
   it("falls back to directory basename when frontmatter name is missing", () => {
     writeFileSync(
       resolve(skillDir, "SKILL.md"),

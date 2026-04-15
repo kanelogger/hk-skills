@@ -58,34 +58,54 @@ describe("fetchRemote", () => {
     return fs.mkdtempSync(path.join(os.tmpdir(), "fetcher-remote-test-"));
   }
 
-  it("clones a remote repo into warehouse/remote and returns the skill name", async () => {
+  it("clones a remote repo into warehouse/remote and returns metadata", async () => {
     const root = makeTempDir();
-    const execSyncSpy = spyOn(childProcess, "execSync").mockImplementation(() => "" as never);
+    const execSyncSpy = spyOn(childProcess, "execSync").mockImplementation((cmd: string) => {
+      if (cmd.includes("rev-parse HEAD")) {
+        return "abc123" as never;
+      }
+      if (cmd.includes("rev-parse --abbrev-ref HEAD")) {
+        return "main" as never;
+      }
+      return "" as never;
+    });
 
     const repoUrl = "https://github.com/user/skills/my-skill";
     const result = await fetchRemote(root, repoUrl);
-    expect(result).toBe("my-skill");
+    expect(result).toEqual({ name: "my-skill", repoUrl, ref: "main", commit: "abc123" });
 
     const targetPath = path.join(root, "warehouse", "remote", "my-skill");
     expect(execSyncSpy).toHaveBeenCalledWith(
       `git clone "${repoUrl}" "${targetPath}"`,
       { stdio: "ignore" }
     );
+    expect(execSyncSpy).toHaveBeenCalledWith(
+      `git -C "${targetPath}" rev-parse HEAD`,
+      { encoding: "utf-8" }
+    );
 
     execSyncSpy.mockRestore();
     fs.rmSync(root, { recursive: true, force: true });
   });
 
-  it("pulls instead of cloning when the target already exists", async () => {
+  it("pulls instead of cloning when the target already exists and returns metadata", async () => {
     const root = makeTempDir();
     const targetPath = path.join(root, "warehouse", "remote", "existing-skill");
     fs.mkdirSync(targetPath, { recursive: true });
 
-    const execSyncSpy = spyOn(childProcess, "execSync").mockImplementation(() => "" as never);
+    const execSyncSpy = spyOn(childProcess, "execSync").mockImplementation((cmd: string) => {
+      if (cmd.includes("rev-parse HEAD")) {
+        return "def456" as never;
+      }
+      if (cmd.includes("rev-parse --abbrev-ref HEAD")) {
+        return "feature-branch" as never;
+      }
+      return "" as never;
+    });
 
     const repoUrl = "https://github.com/user/skills/existing-skill";
     const result = await fetchRemote(root, repoUrl);
-    expect(result).toBe("existing-skill");
+    expect(result).toEqual({ name: "existing-skill", repoUrl, ref: "feature-branch", commit: "def456" });
 
     expect(execSyncSpy).toHaveBeenCalledWith(
       `git -C "${targetPath}" pull`,

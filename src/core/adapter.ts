@@ -13,7 +13,10 @@ export interface AdaptResult {
 export function adapt(
   inputPath: string,
   root: string,
-  sourceType: "local" | "remote" | "adapted"
+  sourceType: "local" | "remote" | "adapted",
+  repo?: string,
+  ref?: string,
+  commit?: string
 ): AdaptResult {
   const errors: string[] = [];
 
@@ -44,16 +47,25 @@ export function adapt(
       ? frontmatter.display_name
       : name;
 
+  const source: Record<string, unknown> = { type: sourceType };
+  if (sourceType === "remote") {
+    if (typeof repo === "string" && repo.length > 0) {
+      source.repo = repo;
+    } else if (typeof frontmatter.repo === "string" && frontmatter.repo.length > 0) {
+      source.repo = frontmatter.repo;
+    }
+    if (typeof ref === "string" && ref.length > 0) {
+      source.ref = ref;
+    }
+    if (typeof commit === "string" && commit.length > 0) {
+      source.commit = commit;
+    }
+  }
+
   const manifest: Record<string, unknown> = {
     name,
     display_name: displayName,
-    source: {
-      type: sourceType,
-      ...(sourceType === "remote" &&
-        typeof frontmatter.repo === "string" && {
-          repo: frontmatter.repo,
-        }),
-    },
+    source,
     status: {
       stage: "adapted",
     },

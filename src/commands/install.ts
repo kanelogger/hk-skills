@@ -3,7 +3,12 @@ import fs from "node:fs";
 import { fetchRemote, fetchLocal } from "../core/fetcher.js";
 import { vet } from "../core/vetter.js";
 import { adapt } from "../core/adapter.js";
-import { loadSkillsRegistry, saveSkillsRegistry } from "../services/registry.js";
+import {
+  loadSkillsRegistry,
+  saveSkillsRegistry,
+  loadSourcesRegistry,
+  saveSourcesRegistry,
+} from "../services/registry.js";
 import { getWarehousePath } from "../utils/paths.js";
 import { success, error, warn } from "../utils/logger.js";
 
@@ -13,10 +18,17 @@ export async function install(root: string, source: string, options?: { local?: 
   let name: string;
   let fetchedPath: string;
   let sourceType: "remote" | "local";
+  let repoUrl: string | undefined;
+  let ref: string | undefined;
+  let commit: string | undefined;
 
   try {
     if (isRemote) {
-      name = await fetchRemote(root, source);
+      const fetchResult = await fetchRemote(root, source);
+      name = fetchResult.name;
+      repoUrl = fetchResult.repoUrl;
+      ref = fetchResult.ref;
+      commit = fetchResult.commit;
       fetchedPath = path.join(getWarehousePath(root, "remote"), name);
       sourceType = "remote";
     } else {
@@ -40,7 +52,10 @@ export async function install(root: string, source: string, options?: { local?: 
     process.exit(1);
   }
 
-  const adaptResult = adapt(fetchedPath, root, sourceType);
+  const adaptResult =
+    sourceType === "remote"
+      ? adapt(fetchedPath, root, sourceType, repoUrl, ref, commit)
+      : adapt(fetchedPath, root, sourceType);
   if (!adaptResult.success) {
     error(`Adapt failed for ${name}: ${adaptResult.errors.join(", ")}`);
     try {
@@ -67,5 +82,12 @@ export async function install(root: string, source: string, options?: { local?: 
   };
 
   saveSkillsRegistry(root, registry);
+
+  if (sourceType === "remote" && repoUrl && ref) {
+    const sources = loadSourcesRegistry(root);
+    sources[adaptResult.name] = [{ repo: repoUrl, ref }];
+    saveSourcesRegistry(root, sources);
+  }
+
   success(`Installed skill: ${adaptResult.name}`);
 }
