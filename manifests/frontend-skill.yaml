@@ -1,0 +1,9 @@
+name: frontend-skill
+display_name: frontend-skill
+source:
+  type: local
+  path: warehouse/local/frontend-skill
+status:
+  stage: adapted
+entry:
+  file: SKILL.md

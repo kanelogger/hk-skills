@@ -1,0 +1,30 @@
+{
+  "vetter": {
+    "manifest": "manifests/vetter.yaml",
+    "installed": true,
+    "enabled_global": true,
+    "enabled_projects": [],
+    "updated_at": "2026-04-15T04:05:41.277Z"
+  },
+  "insights": {
+    "manifest": "manifests/insights.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-15T04:05:41.277Z"
+  },
+  "autoresearch": {
+    "manifest": "manifests/autoresearch.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-15T04:05:41.277Z"
+  },
+  "frontend-skill": {
+    "manifest": "manifests/frontend-skill.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-15T04:05:41.277Z"
+  }
+}

@@ -1,0 +1,9 @@
+name: autoresearch
+display_name: autoresearch
+source:
+  type: local
+  path: warehouse/local/autoresearch
+status:
+  stage: adapted
+entry:
+  file: SKILL.md

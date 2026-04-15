@@ -36,16 +36,16 @@ SETUP_JAVASCRIPT_ONLY.md
 .opencode/
 
 # hk-skills 运行时生成的目录
-registry/
-manifests/
-warehouse/
-runtime/
-logs/
-patches/
-docs/
+# registry/
+# manifests/
+# warehouse/
+# runtime/
+# logs/
+# patches/
+# docs/
 
 # 原子写入临时文件
 *.tmp.*
 
 # bun init 生成的根级产物
-index.ts
+# index.ts

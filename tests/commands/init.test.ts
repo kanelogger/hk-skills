@@ -71,7 +71,7 @@ describe("init", () => {
     mkdirSync(insightsDir, { recursive: true });
     writeFileSync(
       resolve(insightsDir, "SKILL.md"),
-      `---\nname: hk-skill-opencodeInsights\n---\n\n# Insights\n`,
+      `---\nname: insights\n---\n\n# Insights\n`,
       "utf-8"
     );
 
@@ -123,7 +123,7 @@ describe("init", () => {
       "frontend-skill",
       "merge-drafts",
       "vetter",
-      "hk-skill-opencodeInsights",
+      "insights",
     ];
 
     expect(Object.keys(skillsRegistry).sort()).toEqual(expectedSkills.sort());
@@ -162,7 +162,7 @@ describe("init", () => {
       "frontend-skill",
       "merge-drafts",
       "vetter",
-      "hk-skill-opencodeInsights",
+      "insights",
     ]) {
       expect(
         existsSync(resolve(tempDir, "warehouse", "adapted", name, "SKILL.md"))
@@ -209,7 +209,7 @@ describe("init", () => {
       "frontend-skill",
       "merge-drafts",
       "vetter",
-      "hk-skill-opencodeInsights",
+      "insights",
     ];
 
     expect(Object.keys(skillsRegistry).sort()).toEqual(expectedSkills.sort());
