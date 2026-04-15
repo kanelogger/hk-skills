@@ -1,9 +1,0 @@
-name: insights
-display_name: insights
-source:
-  type: local
-  path: warehouse/local/insights
-status:
-  stage: adapted
-entry:
-  file: SKILL.md

@@ -1,8 +1,0 @@
-name: adapter
-display_name: adapter
-source:
-  type: local
-status:
-  stage: adapted
-entry:
-  file: SKILL.md
