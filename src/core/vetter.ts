@@ -69,7 +69,7 @@ function isStopwordMatch(text: string, stopwords: string[]): boolean {
     const swLower = sw.toLowerCase();
     const swTokens = swLower.split(/[^a-z0-9]+/).filter((t) => t.length > 0);
     if (swTokens.length === 1) {
-      singleTokenStopwords.add(swTokens[0]);
+      singleTokenStopwords.add(swTokens[0]!);
     } else {
       multiTokenStopwords.push(swTokens);
     }
@@ -243,7 +243,7 @@ export function vet(skillPath: string): VetResult {
         const lines = fileContent.split("\n");
 
         for (let i = 0; i < lines.length; i++) {
-          const line = lines[i];
+          const line = lines[i]!;
           const lineLower = line.toLowerCase();
 
           if (!keywords.some((kw) => lineLower.includes(kw.toLowerCase()))) {
