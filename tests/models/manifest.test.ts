@@ -35,6 +35,7 @@ describe("SkillManifestSchema", () => {
       entry: {
         file: "SKILL.md",
       },
+      skip_vet: true,
     };
 
     const result = SkillManifestSchema.safeParse(manifest);

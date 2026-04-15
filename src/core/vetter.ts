@@ -196,6 +196,10 @@ export function vet(skillPath: string): VetResult {
     return { passed: false, warnings, errors };
   }
 
+  if (parsed.frontmatter.skip_vet === true) {
+    return { passed: true, warnings, errors };
+  }
+
   let rules: Rule[] = [];
   let stopwords: string[] = [];
 

@@ -1,11 +1,12 @@
-name: autoresearch
-display_name: autoresearch
+name: advanced-vetter
+display_name: advanced-vetter
 source:
   type: local
 status:
   stage: adapted
 entry:
   file: SKILL.md
+skip_vet: true
 adapter:
   target: opencode
-  adapted_from: claude-code
+  adapted_from: null

@@ -104,6 +104,10 @@ export function adapt(
     },
   };
 
+  if (frontmatter.skip_vet === true) {
+    manifest.skip_vet = true;
+  }
+
   if (rewrittenContent !== undefined && detectedAgent !== undefined) {
     manifest.adapter = {
       target: detectedAgent,

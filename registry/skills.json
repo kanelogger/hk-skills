@@ -33,5 +33,19 @@
     "enabled_global": false,
     "enabled_projects": [],
     "updated_at": "2026-04-15T06:37:02.393Z"
+  },
+  "hk-skill-opencodeInsights": {
+    "manifest": "manifests/hk-skill-opencodeInsights.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-15T08:51:18.529Z"
+  },
+  "advanced-vetter": {
+    "manifest": "manifests/advanced-vetter.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-15T08:51:18.537Z"
   }
 }

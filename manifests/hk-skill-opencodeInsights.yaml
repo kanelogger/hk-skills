@@ -1,5 +1,5 @@
-name: autoresearch
-display_name: autoresearch
+name: hk-skill-opencodeInsights
+display_name: hk-skill-opencodeInsights
 source:
   type: local
 status:
@@ -8,4 +8,4 @@ entry:
   file: SKILL.md
 adapter:
   target: opencode
-  adapted_from: claude-code
+  adapted_from: null

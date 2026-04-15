@@ -42,6 +42,7 @@ export const SkillManifestSchema = z.object({
       file: z.string().default("SKILL.md"),
     })
     .optional(),
+  skip_vet: z.boolean().optional(),
 });
 
 export type SkillManifest = z.infer<typeof SkillManifestSchema>;
