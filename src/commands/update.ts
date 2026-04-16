@@ -5,7 +5,7 @@ import { parse } from "yaml";
 import { fetchRemote, type FetchRemoteResult } from "../core/fetcher.js";
 import { vet } from "../core/vetter.js";
 import { adapt } from "../core/adapter.js";
-import { enableSkill, disableSkill } from "../core/activator.js";
+import { enableSkill, refreshSkillLinks } from "../core/activator.js";
 import {
   loadSkillsRegistry,
   saveSkillsRegistry,
@@ -224,14 +224,12 @@ export async function updateSkill(
     }
 
     if (entry.enabled_global) {
-      disableSkill(root, name, "global");
       enableSkill(root, name, "global");
     }
     for (const project of [...entry.enabled_projects]) {
       if (project === canonicalizeProjectId(project)) {
         const projectPath = resolveProjectPathFromCanonicalId(project);
-        disableSkill(root, name, { project: projectPath });
-        enableSkill(root, name, { project: projectPath });
+        refreshSkillLinks(root, name, { project: projectPath });
       }
     }
 

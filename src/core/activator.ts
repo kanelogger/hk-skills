@@ -122,6 +122,28 @@ export function enableSkill(
   saveSkillsRegistry(root, registry);
 }
 
+export function refreshSkillLinks(
+  root: string,
+  name: string,
+  scope: "global" | { project: string }
+): void {
+  const sourcePath = resolveSourcePath(root, name);
+  const runtimeDir = getRuntimePath(root, scope);
+  ensureDir(runtimeDir);
+
+  const linkPath = path.join(runtimeDir, name);
+  removeSymlink(linkPath);
+  ensureSymlink(sourcePath, linkPath);
+
+  if (scope !== "global") {
+    const agentsSkillsDir = getProjectAgentsSkillsPath(scope.project);
+    ensureDir(agentsSkillsDir);
+    const agentsLinkPath = path.join(agentsSkillsDir, name);
+    removeSymlink(agentsLinkPath);
+    ensureSymlink(sourcePath, agentsLinkPath);
+  }
+}
+
 export function disableSkill(
   root: string,
   name: string,

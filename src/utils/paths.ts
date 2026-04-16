@@ -54,9 +54,12 @@ export function getProjectAgentsSkillsPath(projectPath: string): string {
 }
 
 export function resolveProjectPathFromCanonicalId(canonicalId: string): string {
+  if (isSimpleProjectId(canonicalId)) {
+    return canonicalId;
+  }
   try {
     const decoded = Buffer.from(canonicalId, "base64url").toString("utf-8");
-    if (isAbsolute(decoded)) {
+    if (isAbsolute(decoded) && existsSync(resolve(decoded, ".agents", "skills"))) {
       return decoded;
     }
   } catch {}

@@ -73,6 +73,7 @@ describe("update", () => {
   let vetSpy: ReturnType<typeof spyOn>;
   let adaptSpy: ReturnType<typeof spyOn>;
   let enableSkillSpy: ReturnType<typeof spyOn>;
+  let refreshSkillLinksSpy: ReturnType<typeof spyOn>;
   let exitSpy: ReturnType<typeof spyOn>;
   let originalCwd: string;
 
@@ -113,6 +114,7 @@ describe("update", () => {
       return { success: true, name, errors: [] };
     });
     enableSkillSpy = spyOn(activator, "enableSkill").mockImplementation(() => {});
+    refreshSkillLinksSpy = spyOn(activator, "refreshSkillLinks").mockImplementation(() => {});
     exitSpy = spyOn(process, "exit").mockImplementation(() => {
       throw new Error("process.exit called");
     });
@@ -123,6 +125,7 @@ describe("update", () => {
     vetSpy.mockRestore();
     adaptSpy.mockRestore();
     enableSkillSpy.mockRestore();
+    refreshSkillLinksSpy.mockRestore();
     if (exitSpy) exitSpy.mockRestore();
     process.chdir(originalCwd);
     fs.rmSync(tempDir, { recursive: true, force: true });
@@ -339,6 +342,7 @@ describe("update", () => {
 
     exitSpy.mockRestore();
     enableSkillSpy.mockRestore();
+    refreshSkillLinksSpy.mockRestore();
 
     fs.mkdirSync(path.join(tempDir, "runtime", "global"), { recursive: true });
     fs.symlinkSync(path.join(getWarehousePath(tempDir, "adapted"), name), path.join(tempDir, "runtime", "global", name));
@@ -381,6 +385,7 @@ describe("update", () => {
 
     exitSpy.mockRestore();
     enableSkillSpy.mockRestore();
+    refreshSkillLinksSpy.mockRestore();
 
     const canonicalRuntimeDir = path.join(tempDir, "runtime", "projects", canonicalId);
     fs.mkdirSync(canonicalRuntimeDir, { recursive: true });
@@ -421,6 +426,7 @@ describe("update", () => {
 
     exitSpy.mockRestore();
     enableSkillSpy.mockRestore();
+    refreshSkillLinksSpy.mockRestore();
 
     await update(tempDir, name, {});
 
