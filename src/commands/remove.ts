@@ -10,18 +10,8 @@ import {
   loadProjectsRegistry,
   saveProjectsRegistry,
 } from "../services/registry.js";
-import { getManifestPath, getWarehousePath, getRuntimePath, getProjectAgentsSkillsPath, canonicalizeProjectId } from "../utils/paths.js";
+import { getManifestPath, getWarehousePath, getRuntimePath, getProjectAgentsSkillsPath, canonicalizeProjectId, resolveProjectPathFromCanonicalId } from "../utils/paths.js";
 import { info, warn, error, success } from "../utils/logger.js";
-
-function resolveProjectPathFromCanonicalId(canonicalId: string): string {
-  try {
-    const decoded = Buffer.from(canonicalId, "base64url").toString("utf-8");
-    if (path.isAbsolute(decoded)) {
-      return decoded;
-    }
-  } catch {}
-  return canonicalId;
-}
 
 export function safeDisableAll(root: string, name: string): void {
   const registry = loadSkillsRegistry(root);

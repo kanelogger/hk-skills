@@ -360,7 +360,7 @@ describe("update", () => {
   it("re-creates project-scoped symlinks in canonical runtime directory during update", async () => {
     const name = "remote-skill";
     const source_id = generateSourceId(`https://github.com/user/${name}`, "main");
-    const projectPath = "/absolute/path/to/my-app";
+    const projectPath = fs.mkdtempSync(path.join(os.tmpdir(), "hk-skills-update-project-"));
     const canonicalId = canonicalizeProjectId(projectPath);
     createRemoteSkill(tempDir, source_id, name);
     createAdaptedSkill(tempDir, name);
@@ -385,11 +385,17 @@ describe("update", () => {
     const canonicalRuntimeDir = path.join(tempDir, "runtime", "projects", canonicalId);
     fs.mkdirSync(canonicalRuntimeDir, { recursive: true });
     fs.symlinkSync(path.join(getWarehousePath(tempDir, "adapted"), name), path.join(canonicalRuntimeDir, name));
+    fs.mkdirSync(path.join(projectPath, ".agents", "skills"), { recursive: true });
+    fs.symlinkSync(path.join(getWarehousePath(tempDir, "adapted"), name), path.join(projectPath, ".agents", "skills", name));
 
     await update(tempDir, name, {});
 
     expect(fs.existsSync(path.join(tempDir, "runtime", "projects", canonicalId, name))).toBe(true);
     expect(fs.lstatSync(path.join(tempDir, "runtime", "projects", canonicalId, name)).isSymbolicLink()).toBe(true);
+    expect(fs.existsSync(path.join(projectPath, ".agents", "skills", name))).toBe(true);
+    expect(fs.lstatSync(path.join(projectPath, ".agents", "skills", name)).isSymbolicLink()).toBe(true);
+
+    fs.rmSync(projectPath, { recursive: true, force: true });
   });
 
   it("skips legacy raw project paths during update without migrating them", async () => {

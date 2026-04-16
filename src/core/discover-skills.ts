@@ -99,7 +99,12 @@ function walk(
       path.basename(path.dirname(dir)) === ".agents"
     ) {
       try {
-        isManagedSkillLink = fs.statSync(path.join(dir, entry.name)).isDirectory();
+        const linkTarget = fs.readlinkSync(path.join(dir, entry.name));
+        isManagedSkillLink =
+          path.isAbsolute(linkTarget) &&
+          linkTarget.includes("/warehouse/") &&
+          path.basename(linkTarget) === entry.name &&
+          fs.statSync(path.join(dir, entry.name)).isDirectory();
       } catch {
         isManagedSkillLink = false;
       }

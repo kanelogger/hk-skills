@@ -133,4 +133,28 @@ describe("full-lifecycle", () => {
       fs.rmSync(projectDir, { recursive: true, force: true });
     }
   });
+
+  it("does not discover arbitrary non-managed symlinks under .agents/skills/", async () => {
+    init(tempDir);
+
+    const projectDir = path.join(os.tmpdir(), "hk-skills-project-" + Date.now());
+    fs.mkdirSync(projectDir, { recursive: true });
+
+    try {
+      const agentsSkillsDir = path.join(projectDir, ".agents", "skills");
+      fs.mkdirSync(agentsSkillsDir, { recursive: true });
+
+      const arbitraryDir = path.join(os.tmpdir(), "hk-skills-arbitrary-" + Date.now());
+      fs.mkdirSync(arbitraryDir, { recursive: true });
+      fs.writeFileSync(path.join(arbitraryDir, "SKILL.md"), "---\nname: arbitrary-skill\n---\n\n# arbitrary\n", "utf-8");
+      fs.symlinkSync(arbitraryDir, path.join(agentsSkillsDir, "arbitrary-skill"));
+
+      const discovered = discoverSkills(projectDir);
+      expect(discovered).not.toContainEqual({ subpath: ".agents/skills/arbitrary-skill", name: "arbitrary-skill" });
+
+      fs.rmSync(arbitraryDir, { recursive: true, force: true });
+    } finally {
+      fs.rmSync(projectDir, { recursive: true, force: true });
+    }
+  });
 });

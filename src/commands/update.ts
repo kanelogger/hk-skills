@@ -12,7 +12,7 @@ import {
   loadSourcesRegistry,
   saveSourcesRegistry,
 } from "../services/registry.js";
-import { getManifestPath, getWarehousePath, canonicalizeProjectId } from "../utils/paths.js";
+import { getManifestPath, getWarehousePath, canonicalizeProjectId, resolveProjectPathFromCanonicalId } from "../utils/paths.js";
 import { info, warn, error, success } from "../utils/logger.js";
 import { SkillManifestSchema, type SkillManifest } from "../models/manifest.js";
 
@@ -229,8 +229,9 @@ export async function updateSkill(
     }
     for (const project of [...entry.enabled_projects]) {
       if (project === canonicalizeProjectId(project)) {
-        disableSkill(root, name, { project });
-        enableSkill(root, name, { project });
+        const projectPath = resolveProjectPathFromCanonicalId(project);
+        disableSkill(root, name, { project: projectPath });
+        enableSkill(root, name, { project: projectPath });
       }
     }
 

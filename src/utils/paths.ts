@@ -1,5 +1,5 @@
 import { existsSync } from "node:fs";
-import { resolve, dirname } from "node:path";
+import { resolve, dirname, isAbsolute, basename } from "node:path";
 
 export function getRootPath(): string {
   let dir = process.cwd();
@@ -51,4 +51,14 @@ export function getProjectAgentsPath(projectPath: string): string {
 
 export function getProjectAgentsSkillsPath(projectPath: string): string {
   return resolve(projectPath, ".agents", "skills");
+}
+
+export function resolveProjectPathFromCanonicalId(canonicalId: string): string {
+  try {
+    const decoded = Buffer.from(canonicalId, "base64url").toString("utf-8");
+    if (isAbsolute(decoded)) {
+      return decoded;
+    }
+  } catch {}
+  return canonicalId;
 }
