@@ -1,1 +1,200 @@
-{}
+{
+  "release-skills": {
+    "manifest": "manifests/release-skills.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-16T06:34:08.084Z",
+    "source_id": "github.com_JimLiu_baoyu-skills@main",
+    "subpath": ".claude/skills/release-skills"
+  },
+  "baoyu-article-illustrator": {
+    "manifest": "manifests/baoyu-article-illustrator.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-16T06:34:09.405Z",
+    "source_id": "github.com_JimLiu_baoyu-skills@main",
+    "subpath": "skills/baoyu-article-illustrator"
+  },
+  "baoyu-comic": {
+    "manifest": "manifests/baoyu-comic.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-16T06:34:10.683Z",
+    "source_id": "github.com_JimLiu_baoyu-skills@main",
+    "subpath": "skills/baoyu-comic"
+  },
+  "baoyu-compress-image": {
+    "manifest": "manifests/baoyu-compress-image.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-16T06:34:18.197Z",
+    "source_id": "github.com_JimLiu_baoyu-skills@main",
+    "subpath": "skills/baoyu-compress-image"
+  },
+  "baoyu-cover-image": {
+    "manifest": "manifests/baoyu-cover-image.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-16T06:34:19.619Z",
+    "source_id": "github.com_JimLiu_baoyu-skills@main",
+    "subpath": "skills/baoyu-cover-image"
+  },
+  "baoyu-danger-gemini-web": {
+    "manifest": "manifests/baoyu-danger-gemini-web.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-16T06:34:21.083Z",
+    "source_id": "github.com_JimLiu_baoyu-skills@main",
+    "subpath": "skills/baoyu-danger-gemini-web"
+  },
+  "baoyu-danger-x-to-markdown": {
+    "manifest": "manifests/baoyu-danger-x-to-markdown.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-16T06:34:22.456Z",
+    "source_id": "github.com_JimLiu_baoyu-skills@main",
+    "subpath": "skills/baoyu-danger-x-to-markdown"
+  },
+  "baoyu-diagram": {
+    "manifest": "manifests/baoyu-diagram.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-16T06:34:29.730Z",
+    "source_id": "github.com_JimLiu_baoyu-skills@main",
+    "subpath": "skills/baoyu-diagram"
+  },
+  "baoyu-format-markdown": {
+    "manifest": "manifests/baoyu-format-markdown.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-16T06:34:31.933Z",
+    "source_id": "github.com_JimLiu_baoyu-skills@main",
+    "subpath": "skills/baoyu-format-markdown"
+  },
+  "baoyu-image-cards": {
+    "manifest": "manifests/baoyu-image-cards.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-16T06:34:33.465Z",
+    "source_id": "github.com_JimLiu_baoyu-skills@main",
+    "subpath": "skills/baoyu-image-cards"
+  },
+  "baoyu-image-gen": {
+    "manifest": "manifests/baoyu-image-gen.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-16T06:34:34.897Z",
+    "source_id": "github.com_JimLiu_baoyu-skills@main",
+    "subpath": "skills/baoyu-image-gen"
+  },
+  "baoyu-imagine": {
+    "manifest": "manifests/baoyu-imagine.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-16T06:34:36.139Z",
+    "source_id": "github.com_JimLiu_baoyu-skills@main",
+    "subpath": "skills/baoyu-imagine"
+  },
+  "baoyu-infographic": {
+    "manifest": "manifests/baoyu-infographic.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-16T06:34:38.297Z",
+    "source_id": "github.com_JimLiu_baoyu-skills@main",
+    "subpath": "skills/baoyu-infographic"
+  },
+  "baoyu-markdown-to-html": {
+    "manifest": "manifests/baoyu-markdown-to-html.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-16T06:34:39.594Z",
+    "source_id": "github.com_JimLiu_baoyu-skills@main",
+    "subpath": "skills/baoyu-markdown-to-html"
+  },
+  "baoyu-post-to-wechat": {
+    "manifest": "manifests/baoyu-post-to-wechat.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-16T06:34:41.000Z",
+    "source_id": "github.com_JimLiu_baoyu-skills@main",
+    "subpath": "skills/baoyu-post-to-wechat"
+  },
+  "baoyu-post-to-weibo": {
+    "manifest": "manifests/baoyu-post-to-weibo.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-16T06:34:42.294Z",
+    "source_id": "github.com_JimLiu_baoyu-skills@main",
+    "subpath": "skills/baoyu-post-to-weibo"
+  },
+  "baoyu-post-to-x": {
+    "manifest": "manifests/baoyu-post-to-x.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-16T06:34:43.529Z",
+    "source_id": "github.com_JimLiu_baoyu-skills@main",
+    "subpath": "skills/baoyu-post-to-x"
+  },
+  "baoyu-slide-deck": {
+    "manifest": "manifests/baoyu-slide-deck.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-16T06:34:44.898Z",
+    "source_id": "github.com_JimLiu_baoyu-skills@main",
+    "subpath": "skills/baoyu-slide-deck"
+  },
+  "baoyu-translate": {
+    "manifest": "manifests/baoyu-translate.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-16T06:34:47.188Z",
+    "source_id": "github.com_JimLiu_baoyu-skills@main",
+    "subpath": "skills/baoyu-translate"
+  },
+  "baoyu-url-to-markdown": {
+    "manifest": "manifests/baoyu-url-to-markdown.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-16T06:34:49.146Z",
+    "source_id": "github.com_JimLiu_baoyu-skills@main",
+    "subpath": "skills/baoyu-url-to-markdown"
+  },
+  "baoyu-xhs-images": {
+    "manifest": "manifests/baoyu-xhs-images.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-16T06:34:56.708Z",
+    "source_id": "github.com_JimLiu_baoyu-skills@main",
+    "subpath": "skills/baoyu-xhs-images"
+  },
+  "baoyu-youtube-transcript": {
+    "manifest": "manifests/baoyu-youtube-transcript.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-16T06:34:59.289Z",
+    "source_id": "github.com_JimLiu_baoyu-skills@main",
+    "subpath": "skills/baoyu-youtube-transcript"
+  }
+}
