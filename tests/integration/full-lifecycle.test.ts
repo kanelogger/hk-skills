@@ -6,7 +6,8 @@ import { init } from "../../src/commands/init.js";
 import { list } from "../../src/commands/list.js";
 import { enableSkill, disableSkill } from "../../src/core/activator.js";
 import { install } from "../../src/commands/install.js";
-import { loadSkillsRegistry, loadSourcesRegistry } from "../../src/services/registry.js";
+import { reset } from "../../src/commands/reset.js";
+import { loadSkillsRegistry, loadSourcesRegistry, loadProjectsRegistry } from "../../src/services/registry.js";
 import { canonicalizeProjectId } from "../../src/utils/paths.js";
 
 describe("full-lifecycle", () => {
@@ -96,6 +97,36 @@ describe("full-lifecycle", () => {
 
       disableSkill(tempDir, "test-skill", { project: projectDir });
       expect(fs.existsSync(linkPath)).toBe(false);
+    } finally {
+      fs.rmSync(projectDir, { recursive: true, force: true });
+    }
+  });
+
+  it("reset clears encoded project-scoped runtime state and returns to empty managed baseline", async () => {
+    init(tempDir);
+
+    const projectDir = path.join(os.tmpdir(), "hk-skills-project-" + Date.now());
+    fs.mkdirSync(projectDir, { recursive: true });
+
+    try {
+      enableSkill(tempDir, "test-skill", "global");
+      enableSkill(tempDir, "test-skill", { project: projectDir });
+
+      await reset(tempDir, { yes: true });
+
+      expect(fs.existsSync(path.join(tempDir, "runtime", "global", "test-skill"))).toBe(false);
+
+      const encodedId = canonicalizeProjectId(projectDir);
+      expect(fs.existsSync(path.join(tempDir, "runtime", "projects", encodedId, "test-skill"))).toBe(false);
+      expect(fs.readdirSync(path.join(tempDir, "runtime", "projects")).length).toBe(0);
+
+      expect(loadSkillsRegistry(tempDir)).toEqual({});
+      expect(loadSourcesRegistry(tempDir)).toEqual({});
+      expect(loadProjectsRegistry(tempDir)).toEqual({});
+
+      expect(fs.existsSync(path.join(tempDir, "manifests", "test-skill.yaml"))).toBe(false);
+
+      expect(fs.existsSync(path.join(tempDir, "custom", "test-skill", "SKILL.md"))).toBe(true);
     } finally {
       fs.rmSync(projectDir, { recursive: true, force: true });
     }

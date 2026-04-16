@@ -6,6 +6,7 @@ import { list } from "./commands/list.js";
 import { enable } from "./commands/enable.js";
 import { disable } from "./commands/disable.js";
 import { remove } from "./commands/remove.js";
+import { reset } from "./commands/reset.js";
 import { update } from "./commands/update.js";
 import { vet } from "./commands/vet.js";
 import { adaptCommand } from "./commands/adapt.js";
@@ -74,6 +75,14 @@ program
   .option("--yes, -y", "Skip confirmation prompt")
   .action(async (name: string | undefined, options: { unused?: boolean; yes?: boolean }) => {
     await remove(getRootPath(), name, options);
+  });
+
+program
+  .command("reset")
+  .description("Reset project managed state (registry, manifests, runtime, adapted/remote) while preserving local sources")
+  .option("--yes, -y", "Skip confirmation prompt")
+  .action(async (options: { yes?: boolean }) => {
+    await reset(getRootPath(), options);
   });
 
 program

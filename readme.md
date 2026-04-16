@@ -130,6 +130,7 @@ some-skill        remote   adapted  no
 | `disable <name>` | 禁用技能 | `./bin/hk-skill disable vetter --global` |
 | `remove <name>` | 移除技能 | `./bin/hk-skill remove vetter` |
 | `remove --unused` | 移除所有未启用的技能 | `./bin/hk-skill remove --unused` |
+| `reset` | 重置项目 managed 状态（保留本地来源） | `./bin/hk-skill reset --yes` |
 
 ### 高级命令
 
@@ -148,7 +149,7 @@ some-skill        remote   adapted  no
 - `--local`：将 `install` 的源视为本地路径
 - `--unused`：`remove` 时只清理未启用的技能
 - `--all`：`update` 时更新所有远程技能
-- `--yes, -y`：`remove` 时跳过确认提示
+- `--yes, -y`：`remove` / `reset` 时跳过确认提示
 
 ---
 
@@ -204,6 +205,16 @@ some-skill        remote   adapted  no
 ```
 
 更新过程会自动备份当前版本，如果 `vet` 或 `adapt` 失败则会自动回滚，已启用的技能软链接也会被刷新。
+
+### 工作流 E：重置项目为干净状态
+
+```bash
+# 清空所有 managed 状态（registry、manifests、runtime、adapted/remote 等）
+# 保留 warehouse/local/、custom/、skills/ 等本地来源
+./bin/hk-skill reset --yes
+```
+
+重置后项目会回到 init 的目录骨架，但不会重新注册本地来源，适合需要彻底清理后重新安装的场景。
 
 ---
 
