@@ -90,12 +90,6 @@ describe("full-lifecycle", () => {
       expect(fs.existsSync(linkPath)).toBe(true);
       expect(fs.lstatSync(linkPath).isSymbolicLink()).toBe(true);
 
-      // Simulate managed in-project symlink that activator would create under .agents/skills/
-      const agentsSkillsDir = path.join(projectDir, ".agents", "skills");
-      fs.mkdirSync(agentsSkillsDir, { recursive: true });
-      const projectLinkPath = path.join(agentsSkillsDir, "test-skill");
-      fs.symlinkSync(path.join(tempDir, "custom", "test-skill"), projectLinkPath, "dir");
-
       const discovered = discoverSkills(projectDir);
       expect(discovered).toContainEqual({ subpath: ".agents/skills/test-skill", name: "test-skill" });
 

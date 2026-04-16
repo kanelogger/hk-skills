@@ -4,6 +4,7 @@ import path from "node:path";
 import os from "node:os";
 import { reset } from "../../src/commands/reset.js";
 import { enableSkill } from "../../src/core/activator.js";
+import { canonicalizeProjectId } from "../../src/utils/paths.js";
 import {
   loadSkillsRegistry,
   saveSkillsRegistry,
@@ -117,15 +118,20 @@ describe("reset", () => {
   });
 
   it("removes global and encoded project runtime symlinks", async () => {
+    const myAppDir = path.join(tempDir, "my-app");
+    fs.mkdirSync(myAppDir, { recursive: true });
+    const realProjectDir = path.join(tempDir, "real-project");
+    fs.mkdirSync(realProjectDir, { recursive: true });
+
     enableSkill(tempDir, "test-skill", "global");
-    enableSkill(tempDir, "test-skill", { project: "my-app" });
-    enableSkill(tempDir, "test-skill", { project: "/absolute/path/to/project" });
+    enableSkill(tempDir, "test-skill", { project: myAppDir });
+    enableSkill(tempDir, "test-skill", { project: realProjectDir });
 
     await reset(tempDir, { yes: true });
 
     expect(fs.existsSync(path.join(tempDir, "runtime", "global", "test-skill"))).toBe(false);
     expect(
-      fs.existsSync(path.join(tempDir, "runtime", "projects", "my-app", "test-skill"))
+      fs.existsSync(path.join(tempDir, "runtime", "projects", canonicalizeProjectId(myAppDir), "test-skill"))
     ).toBe(false);
     expect(
       fs.readdirSync(path.join(tempDir, "runtime", "global")).length
