@@ -1,4 +1,4 @@
-# HK-Skills 设计文档（交付 Claude 执行版）
+# HK-Skills 设计文档（交付执行版）
 
 > 项目代号：HK-Skills
 > 定位：面向 Agent 生态的 Skill 生命周期管理系统
