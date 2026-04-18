@@ -30,8 +30,10 @@
     "manifest": "manifests/baoyu-compress-image.yaml",
     "installed": true,
     "enabled_global": false,
-    "enabled_projects": [],
-    "updated_at": "2026-04-16T06:34:18.197Z",
+    "enabled_projects": [
+      "L1VzZXJzL2thbmVodWEvcHJvamVjdC93b3JrYXJlYQ"
+    ],
+    "updated_at": "2026-04-16T10:32:17.509Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-compress-image"
   },
@@ -39,8 +41,10 @@
     "manifest": "manifests/baoyu-cover-image.yaml",
     "installed": true,
     "enabled_global": false,
-    "enabled_projects": [],
-    "updated_at": "2026-04-16T06:34:19.619Z",
+    "enabled_projects": [
+      "L1VzZXJzL2thbmVodWEvcHJvamVjdC93b3JrYXJlYQ"
+    ],
+    "updated_at": "2026-04-17T01:58:25.742Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-cover-image"
   },
@@ -48,8 +52,10 @@
     "manifest": "manifests/baoyu-danger-gemini-web.yaml",
     "installed": true,
     "enabled_global": false,
-    "enabled_projects": [],
-    "updated_at": "2026-04-16T06:34:21.083Z",
+    "enabled_projects": [
+      "L1VzZXJzL2thbmVodWEvcHJvamVjdC93b3JrYXJlYQ"
+    ],
+    "updated_at": "2026-04-17T01:58:10.260Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-danger-gemini-web"
   },
@@ -93,8 +99,10 @@
     "manifest": "manifests/baoyu-image-gen.yaml",
     "installed": true,
     "enabled_global": false,
-    "enabled_projects": [],
-    "updated_at": "2026-04-16T06:34:34.897Z",
+    "enabled_projects": [
+      "L1VzZXJzL2thbmVodWEvcHJvamVjdC93b3JrYXJlYQ"
+    ],
+    "updated_at": "2026-04-17T01:57:54.476Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-image-gen"
   },
@@ -111,8 +119,10 @@
     "manifest": "manifests/baoyu-infographic.yaml",
     "installed": true,
     "enabled_global": false,
-    "enabled_projects": [],
-    "updated_at": "2026-04-16T06:34:38.297Z",
+    "enabled_projects": [
+      "L1VzZXJzL2thbmVodWEvcHJvamVjdC93b3JrYXJlYQ"
+    ],
+    "updated_at": "2026-04-17T01:56:51.023Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-infographic"
   },
@@ -165,8 +175,10 @@
     "manifest": "manifests/baoyu-translate.yaml",
     "installed": true,
     "enabled_global": false,
-    "enabled_projects": [],
-    "updated_at": "2026-04-16T06:34:47.188Z",
+    "enabled_projects": [
+      "L1VzZXJzL2thbmVodWEvcHJvamVjdC93b3JrYXJlYQ"
+    ],
+    "updated_at": "2026-04-17T01:52:25.252Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-translate"
   },
@@ -174,8 +186,10 @@
     "manifest": "manifests/baoyu-url-to-markdown.yaml",
     "installed": true,
     "enabled_global": false,
-    "enabled_projects": [],
-    "updated_at": "2026-04-16T06:34:49.146Z",
+    "enabled_projects": [
+      "L1VzZXJzL2thbmVodWEvcHJvamVjdC93b3JrYXJlYQ"
+    ],
+    "updated_at": "2026-04-17T01:52:45.306Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-url-to-markdown"
   },
@@ -196,5 +210,16 @@
     "updated_at": "2026-04-16T06:34:59.289Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-youtube-transcript"
+  },
+  "fireworks-tech-graph": {
+    "manifest": "manifests/fireworks-tech-graph.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [
+      "L1VzZXJzL2thbmVodWEvcHJvamVjdC93b3JrYXJlYQ"
+    ],
+    "updated_at": "2026-04-17T01:46:40.157Z",
+    "source_id": "github.com_yizhiyanhua-ai_fireworks-tech-graph@main",
+    "subpath": ""
   }
 }
