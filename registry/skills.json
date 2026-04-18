@@ -110,8 +110,10 @@
     "manifest": "manifests/baoyu-imagine.yaml",
     "installed": true,
     "enabled_global": false,
-    "enabled_projects": [],
-    "updated_at": "2026-04-16T06:34:36.139Z",
+    "enabled_projects": [
+      "L1VzZXJzL2thbmVodWEvcHJvamVjdC93b3JrYXJlYQ"
+    ],
+    "updated_at": "2026-04-18T11:09:46.828Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-imagine"
   },
@@ -166,8 +168,10 @@
     "manifest": "manifests/baoyu-slide-deck.yaml",
     "installed": true,
     "enabled_global": false,
-    "enabled_projects": [],
-    "updated_at": "2026-04-16T06:34:44.898Z",
+    "enabled_projects": [
+      "L1VzZXJzL2thbmVodWEvcHJvamVjdC93b3JrYXJlYQ"
+    ],
+    "updated_at": "2026-04-18T11:10:25.826Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-slide-deck"
   },
