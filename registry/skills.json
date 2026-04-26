@@ -6,7 +6,7 @@
     "enabled_projects": [
       "L1VzZXJzL2thbmVodWEvcHJvamVjdC9rYW5lX2luYm94"
     ],
-    "updated_at": "2026-04-23T02:24:13.690Z",
+    "updated_at": "2026-04-26T08:20:16.461Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": ".claude/skills/release-skills"
   },
@@ -17,7 +17,7 @@
     "enabled_projects": [
       "L1VzZXJzL2thbmVodWEvcHJvamVjdC9rYW5lX2luYm94"
     ],
-    "updated_at": "2026-04-23T02:24:13.702Z",
+    "updated_at": "2026-04-26T08:20:16.474Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-article-illustrator"
   },
@@ -28,7 +28,7 @@
     "enabled_projects": [
       "L1VzZXJzL2thbmVodWEvcHJvamVjdC9rYW5lX2luYm94"
     ],
-    "updated_at": "2026-04-23T02:24:13.717Z",
+    "updated_at": "2026-04-26T08:20:16.488Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-comic"
   },
@@ -39,7 +39,7 @@
     "enabled_projects": [
       "L1VzZXJzL2thbmVodWEvcHJvamVjdC9rYW5lX2luYm94"
     ],
-    "updated_at": "2026-04-23T02:24:13.722Z",
+    "updated_at": "2026-04-26T08:20:16.494Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-compress-image"
   },
@@ -50,7 +50,7 @@
     "enabled_projects": [
       "L1VzZXJzL2thbmVodWEvcHJvamVjdC9rYW5lX2luYm94"
     ],
-    "updated_at": "2026-04-23T02:24:13.733Z",
+    "updated_at": "2026-04-26T08:20:16.505Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-cover-image"
   },
@@ -61,7 +61,7 @@
     "enabled_projects": [
       "L1VzZXJzL2thbmVodWEvcHJvamVjdC9rYW5lX2luYm94"
     ],
-    "updated_at": "2026-04-23T02:24:13.745Z",
+    "updated_at": "2026-04-26T08:20:16.515Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-danger-gemini-web"
   },
@@ -72,7 +72,7 @@
     "enabled_projects": [
       "L1VzZXJzL2thbmVodWEvcHJvamVjdC9rYW5lX2luYm94"
     ],
-    "updated_at": "2026-04-23T02:24:13.756Z",
+    "updated_at": "2026-04-26T08:20:16.526Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-danger-x-to-markdown"
   },
@@ -83,7 +83,7 @@
     "enabled_projects": [
       "L1VzZXJzL2thbmVodWEvcHJvamVjdC9rYW5lX2luYm94"
     ],
-    "updated_at": "2026-04-23T02:24:13.762Z",
+    "updated_at": "2026-04-26T08:20:16.532Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-diagram"
   },
@@ -94,7 +94,7 @@
     "enabled_projects": [
       "L1VzZXJzL2thbmVodWEvcHJvamVjdC9rYW5lX2luYm94"
     ],
-    "updated_at": "2026-04-23T02:24:13.768Z",
+    "updated_at": "2026-04-26T08:20:16.538Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-format-markdown"
   },
@@ -105,7 +105,7 @@
     "enabled_projects": [
       "L1VzZXJzL2thbmVodWEvcHJvamVjdC9rYW5lX2luYm94"
     ],
-    "updated_at": "2026-04-23T02:24:13.777Z",
+    "updated_at": "2026-04-26T08:20:16.547Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-image-cards"
   },
@@ -116,7 +116,7 @@
     "enabled_projects": [
       "L1VzZXJzL2thbmVodWEvcHJvamVjdC9rYW5lX2luYm94"
     ],
-    "updated_at": "2026-04-23T02:24:13.789Z",
+    "updated_at": "2026-04-26T08:20:16.558Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-image-gen"
   },
@@ -127,7 +127,7 @@
     "enabled_projects": [
       "L1VzZXJzL2thbmVodWEvcHJvamVjdC9rYW5lX2luYm94"
     ],
-    "updated_at": "2026-04-23T02:24:13.802Z",
+    "updated_at": "2026-04-26T08:20:16.570Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-imagine"
   },
@@ -138,7 +138,7 @@
     "enabled_projects": [
       "L1VzZXJzL2thbmVodWEvcHJvamVjdC9rYW5lX2luYm94"
     ],
-    "updated_at": "2026-04-23T02:24:13.814Z",
+    "updated_at": "2026-04-26T08:20:16.584Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-infographic"
   },
@@ -149,7 +149,7 @@
     "enabled_projects": [
       "L1VzZXJzL2thbmVodWEvcHJvamVjdC9rYW5lX2luYm94"
     ],
-    "updated_at": "2026-04-23T02:24:13.823Z",
+    "updated_at": "2026-04-26T08:20:16.591Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-markdown-to-html"
   },
@@ -160,7 +160,7 @@
     "enabled_projects": [
       "L1VzZXJzL2thbmVodWEvcHJvamVjdC9rYW5lX2luYm94"
     ],
-    "updated_at": "2026-04-23T02:24:13.838Z",
+    "updated_at": "2026-04-26T08:20:16.606Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-post-to-wechat"
   },
@@ -171,7 +171,7 @@
     "enabled_projects": [
       "L1VzZXJzL2thbmVodWEvcHJvamVjdC9rYW5lX2luYm94"
     ],
-    "updated_at": "2026-04-23T02:24:13.851Z",
+    "updated_at": "2026-04-26T08:20:16.618Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-post-to-weibo"
   },
@@ -182,7 +182,7 @@
     "enabled_projects": [
       "L1VzZXJzL2thbmVodWEvcHJvamVjdC9rYW5lX2luYm94"
     ],
-    "updated_at": "2026-04-23T02:24:13.865Z",
+    "updated_at": "2026-04-26T08:20:16.632Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-post-to-x"
   },
@@ -193,7 +193,7 @@
     "enabled_projects": [
       "L1VzZXJzL2thbmVodWEvcHJvamVjdC9rYW5lX2luYm94"
     ],
-    "updated_at": "2026-04-23T02:24:13.875Z",
+    "updated_at": "2026-04-26T08:20:16.642Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-slide-deck"
   },
@@ -204,7 +204,7 @@
     "enabled_projects": [
       "L1VzZXJzL2thbmVodWEvcHJvamVjdC9rYW5lX2luYm94"
     ],
-    "updated_at": "2026-04-23T02:24:13.886Z",
+    "updated_at": "2026-04-26T08:20:16.653Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-translate"
   },
@@ -215,7 +215,7 @@
     "enabled_projects": [
       "L1VzZXJzL2thbmVodWEvcHJvamVjdC9rYW5lX2luYm94"
     ],
-    "updated_at": "2026-04-23T02:24:13.903Z",
+    "updated_at": "2026-04-26T08:20:16.855Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-url-to-markdown"
   },
@@ -226,7 +226,7 @@
     "enabled_projects": [
       "L1VzZXJzL2thbmVodWEvcHJvamVjdC9rYW5lX2luYm94"
     ],
-    "updated_at": "2026-04-23T02:24:13.914Z",
+    "updated_at": "2026-04-26T08:20:17.123Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-xhs-images"
   },
@@ -238,19 +238,91 @@
       "L1VzZXJzL2thbmVodWEvcHJvamVjdC9rYW5lX3ZhdWx0",
       "L1VzZXJzL2thbmVodWEvcHJvamVjdC9rYW5lX2luYm94"
     ],
-    "updated_at": "2026-04-23T02:24:13.920Z",
+    "updated_at": "2026-04-26T08:20:17.132Z",
     "source_id": "github.com_JimLiu_baoyu-skills@main",
     "subpath": "skills/baoyu-youtube-transcript"
   },
-  "fireworks-tech-graph": {
-    "manifest": "manifests/fireworks-tech-graph.yaml",
+  "guizang-ppt-skill": {
+    "manifest": "manifests/guizang-ppt-skill.yaml",
     "installed": true,
     "enabled_global": false,
     "enabled_projects": [
       "L1VzZXJzL2thbmVodWEvcHJvamVjdC9rYW5lX2luYm94"
     ],
-    "updated_at": "2026-04-23T01:58:58.828Z",
-    "source_id": "github.com_yizhiyanhua-ai_fireworks-tech-graph@main",
+    "updated_at": "2026-04-26T07:57:25.653Z",
+    "source_id": "github.com_op7418_guizang-ppt-skill@main",
     "subpath": ""
+  },
+  "ljg-read": {
+    "manifest": "manifests/ljg-read.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-26T08:13:32.494Z",
+    "source_id": "github.com_lijigang_ljg-skills@main",
+    "subpath": "skills/ljg-read"
+  },
+  "vercel-composition-patterns": {
+    "manifest": "manifests/vercel-composition-patterns.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-26T08:17:51.475Z",
+    "source_id": "github.com_vercel-labs_agent-skills@main",
+    "subpath": "skills/composition-patterns"
+  },
+  "deploy-to-vercel": {
+    "manifest": "manifests/deploy-to-vercel.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-26T08:17:52.823Z",
+    "source_id": "github.com_vercel-labs_agent-skills@main",
+    "subpath": "skills/deploy-to-vercel"
+  },
+  "vercel-react-best-practices": {
+    "manifest": "manifests/vercel-react-best-practices.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-26T08:17:54.125Z",
+    "source_id": "github.com_vercel-labs_agent-skills@main",
+    "subpath": "skills/react-best-practices"
+  },
+  "vercel-react-native-skills": {
+    "manifest": "manifests/vercel-react-native-skills.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-26T08:17:59.369Z",
+    "source_id": "github.com_vercel-labs_agent-skills@main",
+    "subpath": "skills/react-native-skills"
+  },
+  "vercel-react-view-transitions": {
+    "manifest": "manifests/vercel-react-view-transitions.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-26T08:18:00.633Z",
+    "source_id": "github.com_vercel-labs_agent-skills@main",
+    "subpath": "skills/react-view-transitions"
+  },
+  "vercel-cli-with-tokens": {
+    "manifest": "manifests/vercel-cli-with-tokens.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-26T08:18:06.835Z",
+    "source_id": "github.com_vercel-labs_agent-skills@main",
+    "subpath": "skills/vercel-cli-with-tokens"
+  },
+  "web-design-guidelines": {
+    "manifest": "manifests/web-design-guidelines.yaml",
+    "installed": true,
+    "enabled_global": false,
+    "enabled_projects": [],
+    "updated_at": "2026-04-26T08:18:08.153Z",
+    "source_id": "github.com_vercel-labs_agent-skills@main",
+    "subpath": "skills/web-design-guidelines"
   }
 }

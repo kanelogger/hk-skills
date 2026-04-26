@@ -45,9 +45,25 @@ export async function fetchRemote(
   const targetPath = resolve(warehouseDir, source_id);
 
   if (existsSync(targetPath)) {
-    execSync(`git -C "${targetPath}" pull origin "${ref}"`, { stdio: "ignore" });
+    try {
+      execSync(`git -C "${targetPath}" pull origin "${ref}"`, { stdio: "ignore" });
+    } catch {
+      if (ref === "main") {
+        execSync(`git -C "${targetPath}" pull`, { stdio: "ignore" });
+      } else {
+        throw new Error(`Failed to pull ${repoUrl} at branch "${ref}"`);
+      }
+    }
   } else {
-    execSync(`git clone --branch "${ref}" "${repoUrl}" "${targetPath}"`, { stdio: "ignore" });
+    try {
+      execSync(`git clone --branch "${ref}" "${repoUrl}" "${targetPath}"`, { stdio: "ignore" });
+    } catch {
+      if (ref === "main") {
+        execSync(`git clone "${repoUrl}" "${targetPath}"`, { stdio: "ignore" });
+      } else {
+        throw new Error(`Failed to clone ${repoUrl} at branch "${ref}"`);
+      }
+    }
   }
 
   const commit = execSync(`git -C "${targetPath}" rev-parse HEAD`, {

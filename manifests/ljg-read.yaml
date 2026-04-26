@@ -1,0 +1,11 @@
+name: ljg-read
+display_name: ljg-read
+source:
+  type: remote
+  repo: https://github.com/lijigang/ljg-skills
+  ref: master
+  commit: ec9aafe8b3361da05ba717452538c0faa063fde4
+status:
+  stage: adapted
+entry:
+  file: SKILL.md

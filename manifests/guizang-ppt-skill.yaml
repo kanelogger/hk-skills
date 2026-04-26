@@ -1,0 +1,11 @@
+name: guizang-ppt-skill
+display_name: guizang-ppt-skill
+source:
+  type: remote
+  repo: https://github.com/op7418/guizang-ppt-skill
+  ref: main
+  commit: e09f931308c0ba3839793eb03971878494baeea4
+status:
+  stage: adapted
+entry:
+  file: SKILL.md

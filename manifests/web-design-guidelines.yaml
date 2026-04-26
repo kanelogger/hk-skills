@@ -1,0 +1,11 @@
+name: web-design-guidelines
+display_name: web-design-guidelines
+source:
+  type: remote
+  repo: https://github.com/vercel-labs/agent-skills
+  ref: main
+  commit: ce3e64e468f8fa09a2d075d102771838061fdac0
+status:
+  stage: adapted
+entry:
+  file: SKILL.md

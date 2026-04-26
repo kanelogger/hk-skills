@@ -3,14 +3,28 @@
     "type": "remote",
     "repo": "https://github.com/JimLiu/baoyu-skills",
     "ref": "main",
-    "commit": "8c17d77209b030a97d1746928ae348c99fefa775",
+    "commit": "505a7e10cea80f5da291114db19a4be0e40b9d7e",
     "local_path": "warehouse/remote/github.com_JimLiu_baoyu-skills@main"
   },
-  "github.com_yizhiyanhua-ai_fireworks-tech-graph@main": {
+  "github.com_op7418_guizang-ppt-skill@main": {
     "type": "remote",
-    "repo": "https://github.com/yizhiyanhua-ai/fireworks-tech-graph",
+    "repo": "https://github.com/op7418/guizang-ppt-skill",
     "ref": "main",
-    "commit": "44af4fbec40276b94e54a275162e2ae803e5e13c",
-    "local_path": "warehouse/remote/github.com_yizhiyanhua-ai_fireworks-tech-graph@main"
+    "commit": "e09f931308c0ba3839793eb03971878494baeea4",
+    "local_path": "warehouse/remote/github.com_op7418_guizang-ppt-skill@main"
+  },
+  "github.com_lijigang_ljg-skills@main": {
+    "type": "remote",
+    "repo": "https://github.com/lijigang/ljg-skills",
+    "ref": "master",
+    "commit": "ec9aafe8b3361da05ba717452538c0faa063fde4",
+    "local_path": "warehouse/remote/github.com_lijigang_ljg-skills@main"
+  },
+  "github.com_vercel-labs_agent-skills@main": {
+    "type": "remote",
+    "repo": "https://github.com/vercel-labs/agent-skills",
+    "ref": "main",
+    "commit": "ce3e64e468f8fa09a2d075d102771838061fdac0",
+    "local_path": "warehouse/remote/github.com_vercel-labs_agent-skills@main"
   }
 }

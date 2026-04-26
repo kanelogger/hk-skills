@@ -169,4 +169,54 @@ describe("fetchRemote", () => {
     execSyncSpy.mockRestore();
     fs.rmSync(root, { recursive: true, force: true });
   });
+
+  it("falls back to default branch when main does not exist", async () => {
+    const root = makeTempDir();
+    const repoUrl = "https://github.com/user/skills/master-only";
+    const sourceId = generateSourceId(repoUrl, "main");
+    const targetPath = path.join(root, "warehouse", "remote", sourceId);
+
+    let callCount = 0;
+    const execSyncSpy = spyOn(childProcess, "execSync").mockImplementation((cmd: string) => {
+      callCount++;
+      if (cmd.includes('git clone --branch "main"')) {
+        throw new Error("Remote branch main not found");
+      }
+      if (cmd.includes("rev-parse HEAD")) {
+        return "master123" as never;
+      }
+      if (cmd.includes("rev-parse --abbrev-ref HEAD")) {
+        return "master" as never;
+      }
+      return "" as never;
+    });
+
+    const result = await fetchRemote(root, repoUrl);
+    expect(result).toEqual({ source_id: sourceId, name: "master-only", repoUrl, ref: "master", commit: "master123" });
+    expect(execSyncSpy).toHaveBeenCalledWith(
+      `git clone "${repoUrl}" "${targetPath}"`,
+      { stdio: "ignore" }
+    );
+
+    execSyncSpy.mockRestore();
+    fs.rmSync(root, { recursive: true, force: true });
+  });
+
+  it("throws when a non-main ref does not exist", async () => {
+    const root = makeTempDir();
+    const repoUrl = "https://github.com/user/skills/my-skill";
+    const ref = "nonexistent";
+
+    const execSyncSpy = spyOn(childProcess, "execSync").mockImplementation((cmd: string) => {
+      if (cmd.includes(`git clone --branch "${ref}"`)) {
+        throw new Error("Remote branch nonexistent not found");
+      }
+      return "" as never;
+    });
+
+    expect(fetchRemote(root, repoUrl, ref)).rejects.toThrow('Failed to clone');
+
+    execSyncSpy.mockRestore();
+    fs.rmSync(root, { recursive: true, force: true });
+  });
 });
