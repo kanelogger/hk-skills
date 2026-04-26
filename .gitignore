@@ -1,54 +1,81 @@
+# OS files
 .DS_Store
-.history
+
+# Dependencies
 node_modules/
+.bun/
+
+# Build and test output
 dist/
+build/
+coverage/
+tests/**/coverage/
+tests/e2e/reports/
+*.tsbuildinfo
+
+# Logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-**/*.log
-
-tests/**/coverage/
-tests/e2e/reports
 selenium-debug.log
+logs/
 
-# Editor directories and files
-.idea
-.vscode
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
+# Environment and local overrides
+.env
+.env.*
+!.env.example
 *.local
 
+# Package manager lockfiles
+bun.lockb
 package-lock.json
 yarn.lock
 pnpm-lock.yaml
 
-# 编译生成的文件
+# Editor and IDE state
+.history/
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Local agent tool workspaces
+.agent/
+.agents/
+.opencode/
+
+# Sisyphus task workspace
+.sisyphus/*
+!.sisyphus/evidence/
+.sisyphus/evidence/*
+!.sisyphus/evidence/task-3-install-integration.txt
+!.sisyphus/evidence/task-3-offline-fixtures.txt
+!.sisyphus/evidence/task-4-nontty-output.txt
+!.sisyphus/evidence/task-4-single-output.txt
+!.sisyphus/evidence/task-5-rollback-audit.txt
+!.sisyphus/evidence/task-5-shared-source-guard.txt
+!.sisyphus/evidence/task-6-unsafe-path.txt
+!.sisyphus/evidence/task-7-explicit-bypass.txt
+!.sisyphus/evidence/task-9-log-output.txt
+!.sisyphus/evidence/task-9-registry-subpath.txt
+
+# HK-Skills generated runtime state
+runtime/
+warehouse/adapted/
+warehouse/remote/
+docs/catalog.md
+
+# HK-Skills temporary files
+*.tmp.*
+.tmp/
+
+# Legacy generated declarations
 auto-imports.d.ts
 components.d.ts
 
-# JavaScript 规范文档（内部使用，不提交到版本控制）
+# Local-only internal notes
 CODING_STANDARD.md
 SETUP_JAVASCRIPT_ONLY.md
-.sisyphus/
-.agent/
-.opencode/
-
-# hk-skills 运行时生成的目录
-# registry/
-# manifests/
-# warehouse/
-# runtime/
-# logs/
-# patches/
-# docs/
-
-# 原子写入临时文件
-*.tmp.*
-.tmp/
-# bun init 生成的根级产物
-# index.ts
-runtime/*
-warehouse/adapted/*
-warehouse/remote/*
